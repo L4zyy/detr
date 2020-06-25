@@ -50,7 +50,7 @@ def draw_box(drw, box, b_color, msg, t_color):
     drw.rectangle([x0, y0, x1, y1], outline=b_color, width=2)
     drw.text((x, y), msg, fill=t_color, font=ImageFont.truetype("./arial.ttf", 20))
 
-def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id):
+def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id, save_err_only=False):
     tens = samples.tensors.squeeze().cpu()
     img = sample2img(tens)
     w, h = img.size
@@ -80,6 +80,8 @@ def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_
             p_color = 'red'
             conflict += 1
         else:
+            if save_err_only:
+                continue
             p_color = 'white'
 
         pbox = pbox.cpu() * torch.Tensor([w, h, w, h])
@@ -89,8 +91,12 @@ def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_
         # draw gt
         draw_box(drw, gbox, 'green', '{}'.format(label_cls), 'green')
 
-    fp = Path(args.output_dir, '{:04d}_{}.png'.format(b_id, conflict))
-    img.save(fp)
+    if save_err_only and conflict > 0:
+        fp = Path(args.output_dir, 'err', '{:04d}_{}.png'.format(b_id, conflict))
+        img.save(fp)
+    else:
+        fp = Path(args.output_dir, '{:04d}_{}.png'.format(b_id, conflict))
+        img.save(fp)
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
@@ -173,7 +179,7 @@ def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, out
         outputs = model(samples)
 
         b_id += 1
-        save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id)
+        save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id, True)
 
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
