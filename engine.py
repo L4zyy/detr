@@ -174,8 +174,6 @@ def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, out
 
         b_id += 1
         save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id)
-        if b_id == 5:
-            exit()
 
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
