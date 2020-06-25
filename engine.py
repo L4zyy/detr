@@ -13,6 +13,84 @@ import util.misc as utils
 from datasets.coco_eval import CocoEvaluator
 from datasets.panoptic_eval import PanopticEvaluator
 
+from pathlib import Path
+from models.matcher import build_matcher
+import torchvision.transforms as T
+from PIL import Image, ImageDraw, ImageFont
+inv_normalize = T.Normalize(
+   mean=[-0.485/0.229, -0.456/0.224, -0.406/0.225],
+   std=[1/0.229, 1/0.224, 1/0.225]
+)
+sample2img = T.Compose([
+    inv_normalize,
+    T.ToPILImage(),
+])
+
+CLASSES = [
+    'N/A', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
+    'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'N/A',
+    'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse',
+    'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe', 'N/A', 'backpack',
+    'umbrella', 'N/A', 'N/A', 'handbag', 'tie', 'suitcase', 'frisbee', 'skis',
+    'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove',
+    'skateboard', 'surfboard', 'tennis racket', 'bottle', 'N/A', 'wine glass',
+    'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple', 'sandwich',
+    'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake',
+    'chair', 'couch', 'potted plant', 'bed', 'N/A', 'dining table', 'N/A',
+    'N/A', 'toilet', 'N/A', 'tv', 'laptop', 'mouse', 'remote', 'keyboard',
+    'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'N/A',
+    'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier',
+    'toothbrush', 'None'
+]
+
+def draw_box(drw, box, b_color, msg, t_color):
+    x, y, w, h = box
+    x0, x1 = x-w//2, x+w//2
+    y0, y1 = y-h//2, y+h//2
+    drw.rectangle([x0, y0, x1, y1], outline=b_color, width=2)
+    drw.text((x, y), msg, fill=t_color, font=ImageFont.truetype("arial.ttf", 20))
+
+def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id):
+    tens = samples.tensors.squeeze().cpu()
+    img = sample2img(tens)
+    w, h = img.size
+    drw = ImageDraw.Draw(img)
+    labels = targets[0]
+
+    matcher = build_matcher(args)
+
+    outputs_without_aux = {k: v for k, v in outputs.items() if k != 'aux_outputs'}
+
+    # Retrieve the matching between the outputs of the last layer and the targets
+    indices = matcher(outputs_without_aux, targets)
+    pred_labels = torch.Tensor([outputs['pred_logits'][0][i].argmax() for i in indices[0][0]]).int()
+    pred_confs = torch.Tensor([torch.nn.Softmax(dim=0)(outputs['pred_logits'][0][i]).max() for i in indices[0][0]])
+    labels = torch.Tensor([targets[0]['labels'][i] for i in indices[0][1]]).int()
+    pboxes = [outputs['pred_boxes'][0][i] for i in indices[0][0]]
+    gboxes = [targets[0]['boxes'][i] for i in indices[0][1]]
+
+    conflict = 0
+    for plabel, conf, label, pbox, gbox in zip(pred_labels, pred_confs, labels, pboxes, gboxes):
+        pred_cls = CLASSES[plabel]
+        label_cls = CLASSES[label]
+        if pred_cls == label_cls:
+            continue
+
+        if pred_cls != 'None':
+            p_color = 'red'
+            conflict += 1
+        else:
+            p_color = 'white'
+
+        pbox = pbox.cpu() * torch.Tensor([w, h, w, h])
+        gbox = gbox.cpu() * torch.Tensor([w, h, w, h])
+        # draw pred
+        draw_box(drw, pbox, p_color, '{}[{:.2f}]'.format(pred_cls, conf), p_color)
+        # draw gt
+        draw_box(drw, gbox, 'green', '{}'.format(label_cls), 'green')
+
+    fp = Path(args.output_dir, '{:04d}_{}.png'.format(b_id, conflict))
+    img.save(fp)
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
@@ -65,7 +143,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
 
 @torch.no_grad()
-def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, output_dir):
+def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, output_dir, args=None):
     model.eval()
     criterion.eval()
 
@@ -85,11 +163,20 @@ def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, out
             output_dir=os.path.join(output_dir, "panoptic_eval"),
         )
 
+    conf_acc_list = []
+    b_id = 0
+
     for samples, targets in metric_logger.log_every(data_loader, 10, header):
         samples = samples.to(device)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
         outputs = model(samples)
+
+        b_id += 1
+        save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id)
+        if b_id == 5:
+            exit()
+
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict
 
