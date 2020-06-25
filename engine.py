@@ -48,7 +48,7 @@ def draw_box(drw, box, b_color, msg, t_color):
     x0, x1 = x-w//2, x+w//2
     y0, y1 = y-h//2, y+h//2
     drw.rectangle([x0, y0, x1, y1], outline=b_color, width=2)
-    drw.text((x, y), msg, fill=t_color, font=ImageFont.truetype("arial.ttf", 20))
+    drw.text((x, y), msg, fill=t_color, font=ImageFont.truetype("./arial.ttf", 20))
 
 def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id):
     tens = samples.tensors.squeeze().cpu()
