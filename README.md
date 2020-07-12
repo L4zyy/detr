@@ -17,6 +17,8 @@ Training code follows this idea - it is not a library,
 but simply a [main.py](main.py) importing model and criterion
 definitions with standard training loops.
 
+Additionnally, we provide a Detectron2 wrapper in the d2/ folder. See the readme there for more information.
+
 For details see [End-to-End Object Detection with Transformers](https://ai.facebook.com/research/publications/end-to-end-object-detection-with-transformers) by Nicolas Carion, Francisco Massa, Gabriel Synnaeve, Nicolas Usunier, Alexander Kirillov, and Sergey Zagoruyko.
 
 # Model Zoo
@@ -141,6 +143,13 @@ COCO panoptic val5k models:
 Checkout our [panoptic colab](https://colab.research.google.com/github/facebookresearch/detr/blob/colab/notebooks/DETR_panoptic.ipynb)
 to see how to use and visualize DETR's panoptic segmentation prediction.
 
+# Notebooks
+
+We provide a few notebooks in colab to help you get a grasp on DETR:
+* [DETR's hands on Colab Notebook](https://colab.research.google.com/github/facebookresearch/detr/blob/colab/notebooks/detr_attention.ipynb): Shows how to load a model from hub, generate predictions, then visualize the attention of the model (similar to the figures of the paper)
+* [Standalone Colab Notebook](https://colab.research.google.com/github/facebookresearch/detr/blob/colab/notebooks/detr_demo.ipynb): In this notebook, we demonstrate how to implement a simplified version of DETR from the grounds up in 50 lines of Python, then visualize the predictions. It is a good starting point if you want to gain better understanding the architecture and poke around before diving in the codebase.
+* [Panoptic Colab Notebook](https://colab.research.google.com/github/facebookresearch/detr/blob/colab/notebooks/DETR_panoptic.ipynb): Demonstrates how to use DETR for panoptic segmentation and plot the predictions.
+
 
 # Usage - Object detection
 There are no extra compiled components in DETR and package dependencies are minimal,
@@ -243,7 +252,7 @@ For instance segmentation, you can simply train a normal box model (or used a pr
 Once you have a box model checkpoint, you need to freeze it, and train the segmentation head in isolation.
 For panoptic segmentation you can train on a single node with 8 gpus for 25 epochs:
 ```
-python -m torch.distributed.launch --nproc_per_node=8 --use_env main.py --masks --epochs 25 --lr_drop 15 --coco_path /path/to/coco  --coco_panoptic_path /path/to/coco_panoptic  --dataset_file coco_panoptic --frozen_weigths /output/path/box_model/checkpoint.pth --output_path /output/path/segm_model/
+python -m torch.distributed.launch --nproc_per_node=8 --use_env main.py --masks --epochs 25 --lr_drop 15 --coco_path /path/to/coco  --coco_panoptic_path /path/to/coco_panoptic  --dataset_file coco_panoptic --frozen_weights /output/path/box_model/checkpoint.pth --output_dir /output/path/segm_model
 ```
 For instance segmentation only, simply remove the `dataset_file` and `coco_panoptic_path` arguments from the above command line.
 
