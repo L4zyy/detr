@@ -1,0 +1,3074 @@
+[07/12 02:21:06] detectron2 INFO: Rank of current process: 0. World size: 1
+[07/12 02:21:13] detectron2 INFO: Environment info:
+------------------------  ------------------------------------------------------------------------------------------
+sys.platform              linux
+Python                    3.7.7 (default, May  7 2020, 21:25:33) [GCC 7.3.0]
+numpy                     1.19.0
+detectron2                0.1.3 @/home/zhiyilai/.local/lib/python3.7/site-packages/detectron2
+detectron2 compiler       GCC 7.3
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_35, sm_37, sm_50, sm_52, sm_60, sm_61, sm_70, sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.5.1 @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0,1,2,3               GeForce GTX TITAN X
+CUDA_HOME                 /cm/shared/apps/cuda101/10.1.168
+NVCC                      Cuda compilation tools, release 10.1, V10.1.168
+Pillow                    7.1.2
+torchvision               0.6.0a0+35d732a @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+fvcore                    0.1.1.post20200623
+cv2                       3.4.2
+------------------------  ------------------------------------------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.1 Product Build 20200208 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.2
+  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_INTERNAL_THREADPOOL_IMPL -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[07/12 02:21:13] detectron2 INFO: Command line arguments: Namespace(config_file='configs/detr_256_6_6_torchvision.yaml', dist_url='tcp://127.0.0.1:64784', eval_only=True, machine_rank=0, num_gpus=1, num_machines=1, opts=['MODEL.WEIGHTS', 'converted_model.pth'], resume=False)
+[07/12 02:21:13] detectron2 INFO: Contents of args.config_file=configs/detr_256_6_6_torchvision.yaml:
+MODEL:
+  META_ARCHITECTURE: "Detr"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+    STRIDE_IN_1X1: False
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  DETR:
+    GIOU_WEIGHT: 2.0
+    L1_WEIGHT: 5.0
+    NUM_OBJECT_QUERIES: 100
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 64
+  BASE_LR: 0.0001
+  STEPS: (369600,)
+  MAX_ITER: 554400
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WEIGHT_DECAY: 0.0001
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 0.1
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 0.01
+    NORM_TYPE: 2.0
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  CROP:
+    ENABLED: True
+    TYPE: "absolute_range"
+    SIZE: (384, 600)
+  FORMAT: "RGB"
+TEST:
+  EVAL_PERIOD: 4000
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+VERSION: 2
+
+[07/12 02:21:13] detectron2 INFO: Running with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ('coco_2017_val',)
+  TRAIN: ('coco_2017_train',)
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: True
+    SIZE: [384, 600]
+    TYPE: absolute_range
+  FORMAT: RGB
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_resnet_backbone
+  DETR:
+    DEC_LAYERS: 6
+    DEEP_SUPERVISION: True
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.1
+    ENC_LAYERS: 6
+    GIOU_WEIGHT: 2.0
+    HIDDEN_DIM: 256
+    L1_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_CLASSES: 80
+    NUM_OBJECT_QUERIES: 100
+    PRE_NORM: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: Detr
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [123.675, 116.28, 103.53]
+  PIXEL_STD: [58.395, 57.12, 57.375]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res2', 'res3', 'res4', 'res5']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: False
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: converted_model.pth
+OUTPUT_DIR: ./output
+SEED: -1
+SOLVER:
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 5000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: full_model
+    CLIP_VALUE: 0.01
+    ENABLED: True
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 554400
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: ADAMW
+  STEPS: (369600,)
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 4000
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[07/12 02:21:13] detectron2 INFO: Full config saved to ./output/config.yaml
+[07/12 02:21:13] d2.utils.env INFO: Using a generated random seed 14043118
+[07/12 02:21:22] d2.engine.defaults INFO: Model:
+Detr(
+  (detr): DETR(
+    (transformer): Transformer(
+      (encoder): TransformerEncoder(
+        (layers): ModuleList(
+          (0): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (class_embed): Linear(in_features=256, out_features=81, bias=True)
+    (bbox_embed): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): Linear(in_features=256, out_features=256, bias=True)
+        (2): Linear(in_features=256, out_features=4, bias=True)
+      )
+    )
+    (query_embed): Embedding(100, 256)
+    (input_proj): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+    (backbone): Joiner(
+      (0): MaskedBackbone(
+        (backbone): ResNet(
+          (stem): BasicStem(
+            (conv1): Conv2d(
+              3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+              (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+            )
+          )
+          (res2): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+          )
+          (res3): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+          )
+          (res4): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (4): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (5): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+          )
+          (res5): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+          )
+        )
+      )
+      (1): PositionEmbeddingSine()
+    )
+  )
+  (criterion): SetCriterion(
+    (matcher): HungarianMatcher()
+  )
+)
+[07/12 02:21:22] fvcore.common.checkpoint INFO: Loading checkpoint from converted_model.pth
+[07/12 02:22:57] detectron2 INFO: Rank of current process: 0. World size: 1
+[07/12 02:22:59] detectron2 INFO: Environment info:
+------------------------  ------------------------------------------------------------------------------------------
+sys.platform              linux
+Python                    3.7.7 (default, May  7 2020, 21:25:33) [GCC 7.3.0]
+numpy                     1.19.0
+detectron2                0.1.3 @/home/zhiyilai/.local/lib/python3.7/site-packages/detectron2
+detectron2 compiler       GCC 7.3
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_35, sm_37, sm_50, sm_52, sm_60, sm_61, sm_70, sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.5.1 @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0,1,2,3               GeForce GTX TITAN X
+CUDA_HOME                 /cm/shared/apps/cuda101/10.1.168
+NVCC                      Cuda compilation tools, release 10.1, V10.1.168
+Pillow                    7.1.2
+torchvision               0.6.0a0+35d732a @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+fvcore                    0.1.1.post20200623
+cv2                       3.4.2
+------------------------  ------------------------------------------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.1 Product Build 20200208 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.2
+  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_INTERNAL_THREADPOOL_IMPL -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[07/12 02:22:59] detectron2 INFO: Command line arguments: Namespace(config_file='configs/detr_256_6_6_torchvision.yaml', dist_url='tcp://127.0.0.1:64784', eval_only=True, machine_rank=0, num_gpus=1, num_machines=1, opts=['MODEL.WEIGHTS', 'converted_model.pth'], resume=False)
+[07/12 02:22:59] detectron2 INFO: Contents of args.config_file=configs/detr_256_6_6_torchvision.yaml:
+MODEL:
+  META_ARCHITECTURE: "Detr"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+    STRIDE_IN_1X1: False
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  DETR:
+    GIOU_WEIGHT: 2.0
+    L1_WEIGHT: 5.0
+    NUM_OBJECT_QUERIES: 100
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 64
+  BASE_LR: 0.0001
+  STEPS: (369600,)
+  MAX_ITER: 554400
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WEIGHT_DECAY: 0.0001
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 0.1
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 0.01
+    NORM_TYPE: 2.0
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  CROP:
+    ENABLED: True
+    TYPE: "absolute_range"
+    SIZE: (384, 600)
+  FORMAT: "RGB"
+TEST:
+  EVAL_PERIOD: 4000
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+VERSION: 2
+
+[07/12 02:22:59] detectron2 INFO: Running with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ('coco_2017_val',)
+  TRAIN: ('coco_2017_train',)
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: True
+    SIZE: [384, 600]
+    TYPE: absolute_range
+  FORMAT: RGB
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_resnet_backbone
+  DETR:
+    DEC_LAYERS: 6
+    DEEP_SUPERVISION: True
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.1
+    ENC_LAYERS: 6
+    GIOU_WEIGHT: 2.0
+    HIDDEN_DIM: 256
+    L1_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_CLASSES: 80
+    NUM_OBJECT_QUERIES: 100
+    PRE_NORM: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: Detr
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [123.675, 116.28, 103.53]
+  PIXEL_STD: [58.395, 57.12, 57.375]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res2', 'res3', 'res4', 'res5']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: False
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: converted_model.pth
+OUTPUT_DIR: ./output
+SEED: -1
+SOLVER:
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 5000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: full_model
+    CLIP_VALUE: 0.01
+    ENABLED: True
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 554400
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: ADAMW
+  STEPS: (369600,)
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 4000
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[07/12 02:22:59] detectron2 INFO: Full config saved to ./output/config.yaml
+[07/12 02:22:59] d2.utils.env INFO: Using a generated random seed 59773437
+[07/12 02:23:02] d2.engine.defaults INFO: Model:
+Detr(
+  (detr): DETR(
+    (transformer): Transformer(
+      (encoder): TransformerEncoder(
+        (layers): ModuleList(
+          (0): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (class_embed): Linear(in_features=256, out_features=81, bias=True)
+    (bbox_embed): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): Linear(in_features=256, out_features=256, bias=True)
+        (2): Linear(in_features=256, out_features=4, bias=True)
+      )
+    )
+    (query_embed): Embedding(100, 256)
+    (input_proj): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+    (backbone): Joiner(
+      (0): MaskedBackbone(
+        (backbone): ResNet(
+          (stem): BasicStem(
+            (conv1): Conv2d(
+              3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+              (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+            )
+          )
+          (res2): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+          )
+          (res3): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+          )
+          (res4): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (4): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (5): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+          )
+          (res5): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+          )
+        )
+      )
+      (1): PositionEmbeddingSine()
+    )
+  )
+  (criterion): SetCriterion(
+    (matcher): HungarianMatcher()
+  )
+)
+[07/12 02:23:02] fvcore.common.checkpoint INFO: Loading checkpoint from converted_model.pth
+[07/12 02:26:21] detectron2 INFO: Rank of current process: 0. World size: 1
+[07/12 02:26:23] detectron2 INFO: Environment info:
+------------------------  ------------------------------------------------------------------------------------------
+sys.platform              linux
+Python                    3.7.7 (default, May  7 2020, 21:25:33) [GCC 7.3.0]
+numpy                     1.19.0
+detectron2                0.1.3 @/home/zhiyilai/.local/lib/python3.7/site-packages/detectron2
+detectron2 compiler       GCC 7.3
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_35, sm_37, sm_50, sm_52, sm_60, sm_61, sm_70, sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.5.1 @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0,1,2,3               GeForce GTX TITAN X
+CUDA_HOME                 /cm/shared/apps/cuda101/10.1.168
+NVCC                      Cuda compilation tools, release 10.1, V10.1.168
+Pillow                    7.1.2
+torchvision               0.6.0a0+35d732a @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+fvcore                    0.1.1.post20200623
+cv2                       3.4.2
+------------------------  ------------------------------------------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.1 Product Build 20200208 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.2
+  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_INTERNAL_THREADPOOL_IMPL -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[07/12 02:26:23] detectron2 INFO: Command line arguments: Namespace(config_file='configs/detr_256_6_6_torchvision.yaml', dist_url='tcp://127.0.0.1:64784', eval_only=True, machine_rank=0, num_gpus=1, num_machines=1, opts=['MODEL.WEIGHTS', 'converted_model.pth'], resume=False)
+[07/12 02:26:23] detectron2 INFO: Contents of args.config_file=configs/detr_256_6_6_torchvision.yaml:
+MODEL:
+  META_ARCHITECTURE: "Detr"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+    STRIDE_IN_1X1: False
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  DETR:
+    GIOU_WEIGHT: 2.0
+    L1_WEIGHT: 5.0
+    NUM_OBJECT_QUERIES: 100
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 64
+  BASE_LR: 0.0001
+  STEPS: (369600,)
+  MAX_ITER: 554400
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WEIGHT_DECAY: 0.0001
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 0.1
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 0.01
+    NORM_TYPE: 2.0
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  CROP:
+    ENABLED: True
+    TYPE: "absolute_range"
+    SIZE: (384, 600)
+  FORMAT: "RGB"
+TEST:
+  EVAL_PERIOD: 4000
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+VERSION: 2
+
+[07/12 02:26:23] detectron2 INFO: Running with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ('coco_2017_val',)
+  TRAIN: ('coco_2017_train',)
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: True
+    SIZE: [384, 600]
+    TYPE: absolute_range
+  FORMAT: RGB
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_resnet_backbone
+  DETR:
+    DEC_LAYERS: 6
+    DEEP_SUPERVISION: True
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.1
+    ENC_LAYERS: 6
+    GIOU_WEIGHT: 2.0
+    HIDDEN_DIM: 256
+    L1_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_CLASSES: 80
+    NUM_OBJECT_QUERIES: 100
+    PRE_NORM: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: Detr
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [123.675, 116.28, 103.53]
+  PIXEL_STD: [58.395, 57.12, 57.375]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res2', 'res3', 'res4', 'res5']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: False
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: converted_model.pth
+OUTPUT_DIR: ./output
+SEED: -1
+SOLVER:
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 5000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: full_model
+    CLIP_VALUE: 0.01
+    ENABLED: True
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 554400
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: ADAMW
+  STEPS: (369600,)
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 4000
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[07/12 02:26:23] detectron2 INFO: Full config saved to ./output/config.yaml
+[07/12 02:26:23] d2.utils.env INFO: Using a generated random seed 23956224
+[07/12 02:26:27] d2.engine.defaults INFO: Model:
+Detr(
+  (detr): DETR(
+    (transformer): Transformer(
+      (encoder): TransformerEncoder(
+        (layers): ModuleList(
+          (0): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (class_embed): Linear(in_features=256, out_features=81, bias=True)
+    (bbox_embed): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): Linear(in_features=256, out_features=256, bias=True)
+        (2): Linear(in_features=256, out_features=4, bias=True)
+      )
+    )
+    (query_embed): Embedding(100, 256)
+    (input_proj): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+    (backbone): Joiner(
+      (0): MaskedBackbone(
+        (backbone): ResNet(
+          (stem): BasicStem(
+            (conv1): Conv2d(
+              3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+              (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+            )
+          )
+          (res2): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+          )
+          (res3): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+          )
+          (res4): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (4): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (5): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+          )
+          (res5): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+          )
+        )
+      )
+      (1): PositionEmbeddingSine()
+    )
+  )
+  (criterion): SetCriterion(
+    (matcher): HungarianMatcher()
+  )
+)
+[07/12 02:26:27] fvcore.common.checkpoint INFO: Loading checkpoint from converted_model.pth
+[07/12 02:35:51] detectron2 INFO: Rank of current process: 0. World size: 1
+[07/12 02:35:54] detectron2 INFO: Environment info:
+------------------------  ------------------------------------------------------------------------------------------
+sys.platform              linux
+Python                    3.7.7 (default, May  7 2020, 21:25:33) [GCC 7.3.0]
+numpy                     1.19.0
+detectron2                0.1.3 @/home/zhiyilai/.local/lib/python3.7/site-packages/detectron2
+detectron2 compiler       GCC 7.3
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_35, sm_37, sm_50, sm_52, sm_60, sm_61, sm_70, sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.5.1 @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0,1,2,3               GeForce GTX TITAN X
+CUDA_HOME                 /cm/shared/apps/cuda101/10.1.168
+NVCC                      Cuda compilation tools, release 10.1, V10.1.168
+Pillow                    7.1.2
+torchvision               0.6.0a0+35d732a @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+fvcore                    0.1.1.post20200623
+cv2                       3.4.2
+------------------------  ------------------------------------------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.1 Product Build 20200208 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.2
+  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_INTERNAL_THREADPOOL_IMPL -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[07/12 02:35:54] detectron2 INFO: Command line arguments: Namespace(config_file='configs/detr_256_6_6_torchvision.yaml', dist_url='tcp://127.0.0.1:64784', eval_only=True, machine_rank=0, num_gpus=1, num_machines=1, opts=['MODEL.WEIGHTS', 'converted_model.pth'], resume=False)
+[07/12 02:35:54] detectron2 INFO: Contents of args.config_file=configs/detr_256_6_6_torchvision.yaml:
+MODEL:
+  META_ARCHITECTURE: "Detr"
+  WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl"
+  PIXEL_MEAN: [123.675, 116.280, 103.530]
+  PIXEL_STD: [58.395, 57.120, 57.375]
+  MASK_ON: False
+  RESNETS:
+    DEPTH: 50
+    STRIDE_IN_1X1: False
+    OUT_FEATURES: ["res2", "res3", "res4", "res5"]
+  DETR:
+    GIOU_WEIGHT: 2.0
+    L1_WEIGHT: 5.0
+    NUM_OBJECT_QUERIES: 100
+DATASETS:
+  TRAIN: ("coco_2017_train",)
+  TEST: ("coco_2017_val",)
+SOLVER:
+  IMS_PER_BATCH: 64
+  BASE_LR: 0.0001
+  STEPS: (369600,)
+  MAX_ITER: 554400
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WEIGHT_DECAY: 0.0001
+  OPTIMIZER: "ADAMW"
+  BACKBONE_MULTIPLIER: 0.1
+  CLIP_GRADIENTS:
+    ENABLED: True
+    CLIP_TYPE: "full_model"
+    CLIP_VALUE: 0.01
+    NORM_TYPE: 2.0
+INPUT:
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  CROP:
+    ENABLED: True
+    TYPE: "absolute_range"
+    SIZE: (384, 600)
+  FORMAT: "RGB"
+TEST:
+  EVAL_PERIOD: 4000
+DATALOADER:
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+VERSION: 2
+
+[07/12 02:35:54] detectron2 INFO: Running with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: False
+  NUM_WORKERS: 4
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ('coco_2017_val',)
+  TRAIN: ('coco_2017_train',)
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: True
+    SIZE: [384, 600]
+    TYPE: absolute_range
+  FORMAT: RGB
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_resnet_backbone
+  DETR:
+    DEC_LAYERS: 6
+    DEEP_SUPERVISION: True
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.1
+    ENC_LAYERS: 6
+    GIOU_WEIGHT: 2.0
+    HIDDEN_DIM: 256
+    L1_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_CLASSES: 80
+    NUM_OBJECT_QUERIES: 100
+    PRE_NORM: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: Detr
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [123.675, 116.28, 103.53]
+  PIXEL_STD: [58.395, 57.12, 57.375]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res2', 'res3', 'res4', 'res5']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: False
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: converted_model.pth
+OUTPUT_DIR: ./output
+SEED: -1
+SOLVER:
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 5000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: full_model
+    CLIP_VALUE: 0.01
+    ENABLED: True
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 64
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 554400
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: ADAMW
+  STEPS: (369600,)
+  WARMUP_FACTOR: 1.0
+  WARMUP_ITERS: 10
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 4000
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[07/12 02:35:54] detectron2 INFO: Full config saved to ./output/config.yaml
+[07/12 02:35:54] d2.utils.env INFO: Using a generated random seed 54507982
+[07/12 02:35:57] d2.engine.defaults INFO: Model:
+Detr(
+  (detr): DETR(
+    (transformer): Transformer(
+      (encoder): TransformerEncoder(
+        (layers): ModuleList(
+          (0): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerEncoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (1): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (2): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (3): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (4): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+          (5): TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (multihead_attn): MultiheadAttention(
+              (out_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (linear1): Linear(in_features=256, out_features=2048, bias=True)
+            (dropout): Dropout(p=0.1, inplace=False)
+            (linear2): Linear(in_features=2048, out_features=256, bias=True)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (dropout1): Dropout(p=0.1, inplace=False)
+            (dropout2): Dropout(p=0.1, inplace=False)
+            (dropout3): Dropout(p=0.1, inplace=False)
+          )
+        )
+        (norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+    )
+    (class_embed): Linear(in_features=256, out_features=81, bias=True)
+    (bbox_embed): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): Linear(in_features=256, out_features=256, bias=True)
+        (2): Linear(in_features=256, out_features=4, bias=True)
+      )
+    )
+    (query_embed): Embedding(100, 256)
+    (input_proj): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+    (backbone): Joiner(
+      (0): MaskedBackbone(
+        (backbone): ResNet(
+          (stem): BasicStem(
+            (conv1): Conv2d(
+              3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False
+              (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+            )
+          )
+          (res2): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=64, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+            )
+          )
+          (res3): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=128, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+            )
+          )
+          (res4): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (3): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (4): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+            (5): BottleneckBlock(
+              (conv1): Conv2d(
+                1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=256, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=1024, eps=1e-05)
+              )
+            )
+          )
+          (res5): Sequential(
+            (0): BottleneckBlock(
+              (shortcut): Conv2d(
+                1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+              (conv1): Conv2d(
+                1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (1): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+            (2): BottleneckBlock(
+              (conv1): Conv2d(
+                2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv2): Conv2d(
+                512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=512, eps=1e-05)
+              )
+              (conv3): Conv2d(
+                512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False
+                (norm): FrozenBatchNorm2d(num_features=2048, eps=1e-05)
+              )
+            )
+          )
+        )
+      )
+      (1): PositionEmbeddingSine()
+    )
+  )
+  (criterion): SetCriterion(
+    (matcher): HungarianMatcher()
+  )
+)
+[07/12 02:35:57] fvcore.common.checkpoint INFO: Loading checkpoint from converted_model.pth
+[07/12 02:35:57] fvcore.common.checkpoint INFO: Some model parameters or buffers are not found in the checkpoint:
+  [34mcriterion.empty_weight[0m
