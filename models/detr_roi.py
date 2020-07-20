@@ -22,7 +22,7 @@ from .roi_heads import build_roi_head
 
 class DETR_ROI(nn.Module):
     """ This is the DETR module + ROI that performs object detection """
-    def __init__(self, backbone, transformer, num_classes, num_queries, aux_loss=False):
+    def __init__(self, backbone, transformer, roi_head, roi_weight, num_classes, num_queries, aux_loss=False):
         """ Initializes the model.
         Parameters:
             backbone: torch module of the backbone to be used. See backbone.py
@@ -42,8 +42,33 @@ class DETR_ROI(nn.Module):
         self.input_proj = nn.Conv2d(backbone.num_channels, hidden_dim, kernel_size=1)
         self.backbone = backbone
         self.aux_loss = aux_loss
+        
+        self.roi_head = roi_head
+        self.roi_weight = roi_weight
 
-        self.roi_head = None
+        for name, parameter in self.transformer.named_parameters():
+            parameter.requires_grad_(False)
+        for name, parameter in self.class_embed.named_parameters():
+            parameter.requires_grad_(False)
+        for name, parameter in self.bbox_embed.named_parameters():
+            parameter.requires_grad_(False)
+        for name, parameter in self.query_embed.named_parameters():
+            parameter.requires_grad_(False)
+        for name, parameter in self.input_proj.named_parameters():
+            parameter.requires_grad_(False)
+
+        for name, parameter in self.roi_head.named_parameters():
+            parameter.requires_grad_(False)
+
+    def load_detr_state_dict(self, state_dict):
+        own_state = self.state_dict()
+        for name, param in state_dict.items():
+            if name not in own_state:
+                continue
+            if isinstance(param, torch.nn.Parameter):
+                # backwards compatibility for serialized parameters
+                param = param.data
+            own_state[name].copy_(param)
 
     def forward(self, samples: NestedTensor):
         """ The forward expects a NestedTensor, which consists of:
@@ -70,9 +95,19 @@ class DETR_ROI(nn.Module):
 
         outputs_class = self.class_embed(hs)
         outputs_coord = self.bbox_embed(hs).sigmoid()
+
+        roi_input = [
+            {'p5': features[0].tensors},
+            outputs_coord[-1]
+            ]
+        roi_output = self.roi_head(*roi_input)
+
         out = {'pred_logits': outputs_class[-1], 'pred_boxes': outputs_coord[-1]}
         if self.aux_loss:
             out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord)
+
+        out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
+
         return out
 
     @torch.jit.unused
@@ -315,9 +350,13 @@ def build(args):
 
     transformer = build_transformer(args)
 
-    model = DETR(
+    roi_head = build_roi_head(args)
+
+    model = DETR_ROI(
         backbone,
         transformer,
+        roi_head,
+        args.roi_weight,
         num_classes=num_classes,
         num_queries=args.num_queries,
         aux_loss=args.aux_loss,
