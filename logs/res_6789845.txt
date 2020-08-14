@@ -1,0 +1,19 @@
+| distributed init (rank 2): env://| distributed init (rank 1): env://
+| distributed init (rank 3): env://
+| distributed init (rank 0): env://
+
+git:
+  sha: ccf8f2b78dc8158b46e0bac7875158224bc4f937, status: has uncommited changes, branch: master
+
+Namespace(aux_loss=True, backbone='resnet101', batch_size=1, bbox_loss_coef=5, clip_max_norm=0.1, coco_panoptic_path=None, coco_path='/mnt/nfs/scratch1/zhiyilai/coco', dataset_file='coco', dec_layers=6, device='cuda', dice_loss_coef=1, dilation=True, dim_feedforward=2048, dist_backend='nccl', dist_url='env://', distributed=True, dropout=0.1, enc_layers=6, eos_coef=0.1, epochs=300, eval=False, frozen_weights=None, giou_loss_coef=2, gpu=0, hidden_dim=256, lr=0.0001, lr_backbone=1e-05, lr_drop=200, mask_loss_coef=1, masks=False, nheads=8, num_queries=100, num_workers=2, output_dir='', pooler_resolution=7, pooler_sampling_ratio=2, pooler_type='ROIAlignV2', position_embedding='sine', pre_norm=False, rank=0, remove_difficult=False, resume='https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth', roi_weight=1.0, seed=42, set_cost_bbox=5, set_cost_class=1, set_cost_giou=2, start_epoch=0, weight_decay=0.0001, world_size=4)
+number of params: 60242272
+loading annotations into memory...
+Done (t=16.00s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.71s)
+creating index...
+index created!
+Start training
+Epoch: [0]  [  0/300]  eta: 0:14:43  lr: 0.000100  class_error: 7.35  loss: 5.6351 (5.6351)  loss_bbox: 0.1560 (0.1560)  loss_bbox_0: 0.1452 (0.1452)  loss_bbox_1: 0.1740 (0.1740)  loss_bbox_2: 0.1719 (0.1719)  loss_bbox_3: 0.1696 (0.1696)  loss_bbox_4: 0.1556 (0.1556)  loss_ce: 0.2552 (0.2552)  loss_ce_0: 0.4011 (0.4011)  loss_ce_1: 0.2953 (0.2953)  loss_ce_2: 0.3146 (0.3146)  loss_ce_3: 0.2656 (0.2656)  loss_ce_4: 0.2619 (0.2619)  loss_giou: 0.4715 (0.4715)  loss_giou_0: 0.4999 (0.4999)  loss_giou_1: 0.4840 (0.4840)  loss_giou_2: 0.4767 (0.4767)  loss_giou_3: 0.4718 (0.4718)  loss_giou_4: 0.4653 (0.4653)  cardinality_error_unscaled: 7.7500 (7.7500)  cardinality_error_0_unscaled: 18.7500 (18.7500)  cardinality_error_1_unscaled: 12.0000 (12.0000)  cardinality_error_2_unscaled: 10.5000 (10.5000)  cardinality_error_3_unscaled: 8.7500 (8.7500)  cardinality_error_4_unscaled: 7.2500 (7.2500)  class_error_unscaled: 7.3529 (7.3529)  loss_bbox_unscaled: 0.0312 (0.0312)  loss_bbox_0_unscaled: 0.0290 (0.0290)  loss_bbox_1_unscaled: 0.0348 (0.0348)  loss_bbox_2_unscaled: 0.0344 (0.0344)  loss_bbox_3_unscaled: 0.0339 (0.0339)  loss_bbox_4_unscaled: 0.0311 (0.0311)  loss_ce_unscaled: 0.2552 (0.2552)  loss_ce_0_unscaled: 0.4011 (0.4011)  loss_ce_1_unscaled: 0.2953 (0.2953)  loss_ce_2_unscaled: 0.3146 (0.3146)  loss_ce_3_unscaled: 0.2656 (0.2656)  loss_ce_4_unscaled: 0.2619 (0.2619)  loss_giou_unscaled: 0.2358 (0.2358)  loss_giou_0_unscaled: 0.2500 (0.2500)  loss_giou_1_unscaled: 0.2420 (0.2420)  loss_giou_2_unscaled: 0.2383 (0.2383)  loss_giou_3_unscaled: 0.2359 (0.2359)  loss_giou_4_unscaled: 0.2326 (0.2326)  time: 2.9446  data: 0.3873  max mem: 5986

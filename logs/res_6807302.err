@@ -1,0 +1,58 @@
+Traceback (most recent call last):
+  File "main.py", line 274, in <module>
+    main(args)
+  File "main.py", line 126, in main
+    model, criterion, postprocessors = build_model(args)
+  File "/home/zhiyilai/detr/models/__init__.py", line 8, in build_model
+    return roi_build(args)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 363, in build
+    aux_loss=args.aux_loss,
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 48, in __init__
+    self.roi_weight = Variable(torch.rand(1), requires_grad=True)
+NameError: name 'Variable' is not defined
+Traceback (most recent call last):
+  File "main.py", line 274, in <module>
+    main(args)
+  File "main.py", line 126, in main
+    model, criterion, postprocessors = build_model(args)
+  File "/home/zhiyilai/detr/models/__init__.py", line 8, in build_model
+    return roi_build(args)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 363, in build
+    aux_loss=args.aux_loss,
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 48, in __init__
+    self.roi_weight = Variable(torch.rand(1), requires_grad=True)
+NameError: name 'Variable' is not defined
+Traceback (most recent call last):
+  File "main.py", line 274, in <module>
+    main(args)
+  File "main.py", line 126, in main
+    model, criterion, postprocessors = build_model(args)
+  File "/home/zhiyilai/detr/models/__init__.py", line 8, in build_model
+    return roi_build(args)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 363, in build
+    aux_loss=args.aux_loss,
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 48, in __init__
+    self.roi_weight = Variable(torch.rand(1), requires_grad=True)
+NameError: name 'Variable' is not defined
+Traceback (most recent call last):
+  File "main.py", line 274, in <module>
+    main(args)
+  File "main.py", line 126, in main
+    model, criterion, postprocessors = build_model(args)
+  File "/home/zhiyilai/detr/models/__init__.py", line 8, in build_model
+    return roi_build(args)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 363, in build
+    aux_loss=args.aux_loss,
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 48, in __init__
+    self.roi_weight = Variable(torch.rand(1), requires_grad=True)
+NameError: name 'Variable' is not defined
+Traceback (most recent call last):
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/distributed/launch.py", line 263, in <module>
+    main()
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/distributed/launch.py", line 259, in main
+    cmd=cmd)
+subprocess.CalledProcessError: Command '['/home/zhiyilai/miniconda3/envs/vt/bin/python', '-u', 'main.py', '--roi_head', '--backbone', 'resnet101', '--batch_size', '1', '--dilation', '--resume', 'https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth', '--coco_path', '/mnt/nfs/scratch1/zhiyilai/coco', '--output_dir', '/mnt/nfs/scratch1/zhiyilai/detr_roi/']' returned non-zero exit status 1.

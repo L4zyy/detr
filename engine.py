@@ -70,32 +70,49 @@ def save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_
     gboxes = [targets[0]['boxes'][i] for i in indices[0][1]]
 
     conflict = 0
-    for plabel, conf, label, pbox, gbox in zip(pred_labels, pred_confs, labels, pboxes, gboxes):
-        pred_cls = CLASSES[plabel]
-        label_cls = CLASSES[label]
-        if pred_cls == label_cls:
-            continue
-
-        if pred_cls != 'None':
-            p_color = 'red'
-            conflict += 1
-        else:
-            if save_err_only:
-                continue
-            p_color = 'white'
-
-        pbox = pbox.cpu() * torch.Tensor([w, h, w, h])
-        gbox = gbox.cpu() * torch.Tensor([w, h, w, h])
-        # draw pred
-        draw_box(drw, pbox, p_color, '{}[{:.2f}]'.format(pred_cls, conf), p_color)
-        # draw gt
-        draw_box(drw, gbox, 'green', '{}'.format(label_cls), 'green')
-
     if save_err_only and conflict > 0:
+        for plabel, conf, label, pbox, gbox in zip(pred_labels, pred_confs, labels, pboxes, gboxes):
+            pred_cls = CLASSES[plabel]
+            label_cls = CLASSES[label]
+            if pred_cls == label_cls:
+                continue
+
+            if pred_cls != 'None':
+                p_color = 'red'
+                conflict += 1
+            else:
+                if save_err_only:
+                    continue
+                p_color = 'white'
+
+            pbox = pbox.cpu() * torch.Tensor([w, h, w, h])
+            gbox = gbox.cpu() * torch.Tensor([w, h, w, h])
+            # draw pred
+            draw_box(drw, pbox, p_color, '{}[{:.2f}]'.format(pred_cls, conf), p_color)
+            # draw gt
+            draw_box(drw, gbox, 'green', '{}'.format(label_cls), 'green')
+
         fp = Path(args.output_dir, 'err', '{:04d}_{}.png'.format(b_id, conflict))
         img.save(fp)
     else:
-        fp = Path(args.output_dir, '{:04d}_{}.png'.format(b_id, conflict))
+        for plabel, conf, pbox in zip(pred_labels, pred_confs, pboxes):
+            pred_cls = CLASSES[plabel]
+            if pred_cls == 'None':
+                continue
+
+            p_color = 'white'
+            pbox = pbox.cpu() * torch.Tensor([w, h, w, h])
+            # draw pred
+            draw_box(drw, pbox, p_color, '{}[{:.2f}]'.format(pred_cls, conf), p_color)
+            
+        for label, gbox in zip(labels, gboxes):
+            label_cls = CLASSES[label]
+            g_color = 'green'
+            gbox = gbox.cpu() * torch.Tensor([w, h, w, h])
+            # draw gt
+            draw_box(drw, gbox, g_color, '{}'.format(label_cls), g_color)
+
+        fp = Path(args.output_dir, '{:04d}_{}_{}.png'.format(b_id, conflict, len(pboxes)))
         img.save(fp)
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
@@ -169,8 +186,9 @@ def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, out
             output_dir=os.path.join(output_dir, "panoptic_eval"),
         )
 
-    conf_acc_list = []
-    b_id = 0
+    if args.save_res:
+        conf_acc_list = []
+        b_id = 0
 
     for samples, targets in metric_logger.log_every(data_loader, 10, header):
         samples = samples.to(device)
@@ -178,8 +196,10 @@ def evaluate(model, criterion, postprocessors, data_loader, base_ds, device, out
 
         outputs = model(samples)
 
-        b_id += 1
-        save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id, True)
+        if args.save_res:
+            b_id += 1
+            # save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id, True)
+            save_img_and_update_conf_acc_list(args, samples, outputs, targets, conf_acc_list, b_id)
 
         loss_dict = criterion(outputs, targets)
         weight_dict = criterion.weight_dict

@@ -1,0 +1,74 @@
+Traceback (most recent call last):
+  File "main.py", line 275, in <module>
+    main(args)
+  File "main.py", line 223, in main
+    args.clip_max_norm)
+  File "/home/zhiyilai/detr/engine.py", line 116, in train_one_epoch
+    outputs = model(samples)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 458, in forward
+Traceback (most recent call last):
+  File "main.py", line 275, in <module>
+    output = self.module(*inputs[0], **kwargs[0])
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    main(args)
+  File "main.py", line 223, in main
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 111, in forward
+    args.clip_max_norm)
+  File "/home/zhiyilai/detr/engine.py", line 116, in train_one_epoch
+    out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
+RuntimeError: expected device cpu but got device cuda:1
+    outputs = model(samples)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+Traceback (most recent call last):
+  File "main.py", line 275, in <module>
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 458, in forward
+    output = self.module(*inputs[0], **kwargs[0])
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    main(args)
+  File "main.py", line 223, in main
+    args.clip_max_norm)    
+result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/detr/engine.py", line 116, in train_one_epoch
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 111, in forward
+    out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
+RuntimeError: expected device cpu but got device cuda:0
+    outputs = model(samples)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 458, in forward
+    output = self.module(*inputs[0], **kwargs[0])
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 111, in forward
+    out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
+RuntimeError: expected device cpu but got device cuda:3
+Traceback (most recent call last):
+  File "main.py", line 275, in <module>
+    main(args)
+  File "main.py", line 223, in main
+    args.clip_max_norm)
+  File "/home/zhiyilai/detr/engine.py", line 116, in train_one_epoch
+    outputs = model(samples)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/parallel/distributed.py", line 458, in forward
+    output = self.module(*inputs[0], **kwargs[0])
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/nn/modules/module.py", line 550, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/zhiyilai/detr/models/detr_roi.py", line 111, in forward
+    out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
+RuntimeError: expected device cpu but got device cuda:2
+Traceback (most recent call last):
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/runpy.py", line 193, in _run_module_as_main
+    "__main__", mod_spec)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/runpy.py", line 85, in _run_code
+    exec(code, run_globals)
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/distributed/launch.py", line 263, in <module>
+    main()
+  File "/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch/distributed/launch.py", line 259, in main
+    cmd=cmd)
+subprocess.CalledProcessError: Command '['/home/zhiyilai/miniconda3/envs/vt/bin/python', '-u', 'main.py', '--roi_head', '--backbone', 'resnet101', '--batch_size', '1', '--dilation', '--resume', 'https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth', '--coco_path', '/mnt/nfs/scratch1/zhiyilai/coco', '--output_dir', '/mnt/nfs/scratch1/zhiyilai/detr_roi/']' returned non-zero exit status 1.

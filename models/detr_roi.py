@@ -5,6 +5,7 @@ DETR model and criterion classes.
 import torch
 import torch.nn.functional as F
 from torch import nn
+from torch.autograd import Variable
 
 from util import box_ops
 from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
@@ -18,11 +19,12 @@ from .segmentation import (DETRsegm, PostProcessPanoptic, PostProcessSegm,
 from .transformer import build_transformer
 
 from .roi_heads import build_roi_head
+from .fpn import build_fpn
 
 
 class DETR_ROI(nn.Module):
     """ This is the DETR module + ROI that performs object detection """
-    def __init__(self, backbone, transformer, roi_head, roi_weight, num_classes, num_queries, aux_loss=False):
+    def __init__(self, backbone, transformer, roi_head, roi_weight, fpn, num_classes, num_queries, aux_loss=False):
         """ Initializes the model.
         Parameters:
             backbone: torch module of the backbone to be used. See backbone.py
@@ -44,7 +46,9 @@ class DETR_ROI(nn.Module):
         self.aux_loss = aux_loss
         
         self.roi_head = roi_head
-        self.roi_weight = roi_weight
+        self.fpn = fpn
+        # self.roi_weight = roi_weight
+        self.roi_weight = Variable(torch.rand(1).cuda(), requires_grad=True)
 
         for name, parameter in self.transformer.named_parameters():
             parameter.requires_grad_(False)
@@ -88,6 +92,15 @@ class DETR_ROI(nn.Module):
         if isinstance(samples, (list, torch.Tensor)):
             samples = nested_tensor_from_tensor_list(samples)
         features, pos = self.backbone(samples)
+        # print(len(features))
+        # for ft in features:
+        #     print(ft.tensors.shape)
+        # exit()
+        fpn_features = self.fpn(features)
+        # print(len(fpn_features))
+        # for ft in fpn_features:
+        #     print('[{}]: {}'.format(ft, fpn_features[ft].shape))
+        # exit()
 
         src, mask = features[-1].decompose()
         assert mask is not None
@@ -351,12 +364,14 @@ def build(args):
     transformer = build_transformer(args)
 
     roi_head = build_roi_head(args)
+    fpn = build_fpn(args)
 
     model = DETR_ROI(
         backbone,
         transformer,
         roi_head,
         args.roi_weight,
+        fpn,
         num_classes=num_classes,
         num_queries=args.num_queries,
         aux_loss=args.aux_loss,

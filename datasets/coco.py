@@ -12,13 +12,40 @@ import torchvision
 from pycocotools import mask as coco_mask
 
 import datasets.transforms as T
+from torch.nn import functional as F
 
+import math
+
+def pad_for_fpn(img, target, stride):
+    stride = 32
+    size = list(img.shape)
+    size[-2] = int(math.ceil(size[-2] / stride) * stride)  # type: ignore
+    size[-1] = int(math.ceil(size[-1] / stride) * stride)  # type: ignore
+    size = tuple(size)
+
+    padding = [0, size[-1] - img.shape[-1], 0, size[-2] - img.shape[-2]]
+
+    if all(x == 0 for x in padding):
+        return img, target
+
+    padded_image = F.pad(img, (0, padding[1], 0, padding[0]))
+    if target is None:
+        return padded_image, None
+    target = target.copy()
+    # should we do something wrt the original size?
+    # target["size"] = torch.tensor(padded_image[::-1])
+    inv_idx = torch.arange(padded_image.size(0)-1, -1, -1).long()
+    target["size"] = padded_image[inv_idx]
+    if "masks" in target:
+        target['masks'] = torch.nn.functional.pad(target['masks'], (0, padding[0], 0, padding[1]))
+    return padded_image, target
 
 class CocoDetection(torchvision.datasets.CocoDetection):
-    def __init__(self, img_folder, ann_file, transforms, return_masks):
+    def __init__(self, img_folder, ann_file, transforms, return_masks, fpn):
         super(CocoDetection, self).__init__(img_folder, ann_file)
         self._transforms = transforms
         self.prepare = ConvertCocoPolysToMask(return_masks)
+        self.fpn = fpn
 
     def __getitem__(self, idx):
         img, target = super(CocoDetection, self).__getitem__(idx)
@@ -27,6 +54,14 @@ class CocoDetection(torchvision.datasets.CocoDetection):
         img, target = self.prepare(img, target)
         if self._transforms is not None:
             img, target = self._transforms(img, target)
+
+            # compatible with FPN
+            # print('[{}]before: '.format(idx), img.shape)
+            if self.fpn:
+                img, target = pad_for_fpn(img, target, 32)
+            # print('[{}]after: '.format(idx), img.shape)
+
+
         return img, target
 
 
@@ -154,5 +189,5 @@ def build(image_set, args):
     }
 
     img_folder, ann_file = PATHS[image_set]
-    dataset = CocoDetection(img_folder, ann_file, transforms=make_coco_transforms(image_set), return_masks=args.masks)
+    dataset = CocoDetection(img_folder, ann_file, transforms=make_coco_transforms(image_set), return_masks=args.masks, fpn=args.roi_head)
     return dataset

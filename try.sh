@@ -12,7 +12,7 @@
 #     --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \
 #     --coco_path /mnt/nfs/scratch1/zhiyilai/coco \
 
-python -m torch.distributed.launch --use_env main.py --no_aux_loss \
+python -m torch.distributed.launch --use_env main.py --no_aux_loss --roi_head \
     --backbone resnet101 \
     --batch_size 1 --dilation \
     --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \

@@ -31,6 +31,10 @@ def get_args_parser():
     parser.add_argument('--pooler_sampling_ratio', default=2, type=int)
     parser.add_argument('--pooler_type', default='ROIAlignV2', type=str)
     parser.add_argument('--roi_weight', default=1.0, type=float)
+    parser.add_argument('--roi_head', action='store_true',
+                        help="Use ROI head.")
+    parser.add_argument('--save_res', action='store_true',
+                        help="save results.")
 
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,
@@ -127,10 +131,11 @@ def main(args):
     model_without_ddp = model
 
     # Only train ROI head
-    for p in model.parameters():
-        p.requires_grad = False 
-    for p in model.roi_head.parameters():
-        p.requires_grad = True 
+    if args.roi_head:
+        for p in model.parameters():
+            p.requires_grad = False 
+        for p in model.roi_head.parameters():
+            p.requires_grad = True 
 
     if args.distributed:
         model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
@@ -152,10 +157,11 @@ def main(args):
     dataset_train = build_dataset(image_set='train', args=args)
     dataset_val = build_dataset(image_set='val', args=args)
 
-    train_sub = list(range(1, 1200))
-    val_sub = list(range(1, 600))
-    dataset_train = torch.utils.data.Subset(dataset_train, train_sub)
-    dataset_val = torch.utils.data.Subset(dataset_val, val_sub)
+    if args.roi_head:
+        train_sub = list(range(1, 1200))
+        val_sub = list(range(1, 600))
+        dataset_train = torch.utils.data.Subset(dataset_train, train_sub)
+        dataset_val = torch.utils.data.Subset(dataset_val, val_sub)
 
     if args.distributed:
         sampler_train = DistributedSampler(dataset_train)
@@ -181,7 +187,10 @@ def main(args):
 
     if args.frozen_weights is not None:
         checkpoint = torch.load(args.frozen_weights, map_location='cpu')
-        model_without_ddp.detr.load_detr_state_dict(checkpoint['model'])
+        if args.roi_head:
+            model_without_ddp.detr.load_detr_state_dict(checkpoint['model'])
+        else:
+            model_without_ddp.detr.load_state_dict(checkpoint['model'])
 
     output_dir = Path(args.output_dir)
     if args.resume:
@@ -190,7 +199,10 @@ def main(args):
                 args.resume, map_location='cpu', check_hash=True)
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
-        model_without_ddp.load_detr_state_dict(checkpoint['model'])
+        if args.roi_head:
+            model_without_ddp.load_detr_state_dict(checkpoint['model'])
+        else:
+            model_without_ddp.load_state_dict(checkpoint['model'])
         if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
             optimizer.load_state_dict(checkpoint['optimizer'])
             lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -201,6 +213,7 @@ def main(args):
                                               data_loader_val, base_ds, device, args.output_dir, args)
         if args.output_dir:
             utils.save_on_master(coco_evaluator.coco_eval["bbox"].eval, output_dir / "eval.pth")
+            utils.save_on_master(coco_evaluator.coco_eval["bbox"], output_dir / "ce_obj.pth")
         return
 
     print("Start training")
@@ -253,6 +266,8 @@ def main(args):
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
+
+    print("roi weight: {}".format(model.roi_weight))
 
 
 if __name__ == '__main__':
