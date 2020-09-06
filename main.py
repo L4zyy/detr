@@ -35,6 +35,10 @@ def get_args_parser():
                         help="Use ROI head.")
     parser.add_argument('--save_res', action='store_true',
                         help="save results.")
+    parser.add_argument('--use_subset', action='store_true',
+                        help="use subset to train and eval.")
+    parser.add_argument('--fpn_backbone', action='store_true',
+                        help="use fpn as backbone network.")
 
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,
@@ -134,6 +138,8 @@ def main(args):
     if args.roi_head:
         for p in model.parameters():
             p.requires_grad = False 
+        for p in model.fpn.parameters():
+            p.requires_grad = True 
         for p in model.roi_head.parameters():
             p.requires_grad = True 
 
@@ -157,7 +163,7 @@ def main(args):
     dataset_train = build_dataset(image_set='train', args=args)
     dataset_val = build_dataset(image_set='val', args=args)
 
-    if args.roi_head:
+    if args.use_subset:
         train_sub = list(range(1, 1200))
         val_sub = list(range(1, 600))
         dataset_train = torch.utils.data.Subset(dataset_train, train_sub)
@@ -199,10 +205,16 @@ def main(args):
                 args.resume, map_location='cpu', check_hash=True)
         else:
             checkpoint = torch.load(args.resume, map_location='cpu')
+
+        
         if args.roi_head:
-            model_without_ddp.load_detr_state_dict(checkpoint['model'])
+            if args.start_epoch == 0:
+                model_without_ddp.load_detr_state_dict(checkpoint['model'])
+            else:
+                model_without_ddp.load_state_dict(checkpoint['model'])
         else:
-            model_without_ddp.load_state_dict(checkpoint['model'])
+          model_without_ddp.load_state_dict(checkpoint['model'])
+
         if not args.eval and 'optimizer' in checkpoint and 'lr_scheduler' in checkpoint and 'epoch' in checkpoint:
             optimizer.load_state_dict(checkpoint['optimizer'])
             lr_scheduler.load_state_dict(checkpoint['lr_scheduler'])
@@ -267,7 +279,7 @@ def main(args):
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     print('Training time {}'.format(total_time_str))
 
-    print("roi weight: {}".format(model.roi_weight))
+    print("roi weight: {}".format(model_without_ddp.roi_weight))
 
 
 if __name__ == '__main__':

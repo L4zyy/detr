@@ -57,8 +57,8 @@ class CocoDetection(torchvision.datasets.CocoDetection):
 
             # compatible with FPN
             # print('[{}]before: '.format(idx), img.shape)
-            if self.fpn:
-                img, target = pad_for_fpn(img, target, 32)
+            # if self.fpn:
+            #     img, target = pad_for_fpn(img, target, 32)
             # print('[{}]after: '.format(idx), img.shape)
 
 

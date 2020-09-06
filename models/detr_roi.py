@@ -47,8 +47,8 @@ class DETR_ROI(nn.Module):
         
         self.roi_head = roi_head
         self.fpn = fpn
-        # self.roi_weight = roi_weight
-        self.roi_weight = Variable(torch.rand(1).cuda(), requires_grad=True)
+        self.roi_weight = roi_weight
+        # self.roi_weight = Variable(torch.rand(1).cuda(), requires_grad=True)
 
         for name, parameter in self.transformer.named_parameters():
             parameter.requires_grad_(False)
@@ -92,33 +92,53 @@ class DETR_ROI(nn.Module):
         if isinstance(samples, (list, torch.Tensor)):
             samples = nested_tensor_from_tensor_list(samples)
         features, pos = self.backbone(samples)
+        # print('sample: ', samples.tensors.shape)
         # print(len(features))
         # for ft in features:
         #     print(ft.tensors.shape)
         # exit()
-        fpn_features = self.fpn(features)
-        # print(len(fpn_features))
+        fpn_input = [features[i] for i in [0, 1, 3]]
+        # for ft in fpn_input:
+        #     print(ft.tensors.shape)
+        # exit()
+        # fpn_features = self.fpn(features)
+        fpn_features = self.fpn(fpn_input)
+        # print("fpn:")
         # for ft in fpn_features:
         #     print('[{}]: {}'.format(ft, fpn_features[ft].shape))
         # exit()
 
         src, mask = features[-1].decompose()
+        # print("flatten features:")
+        # print(src.shape)
+        # exit()
         assert mask is not None
         hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
 
         outputs_class = self.class_embed(hs)
         outputs_coord = self.bbox_embed(hs).sigmoid()
 
+        # roi_input = [
+        #     {'p5': features[0].tensors},
+        #     outputs_coord[-1]
+        #     ]
         roi_input = [
-            {'p5': features[0].tensors},
+            {ft: fpn_features[ft] for ft in fpn_features},
             outputs_coord[-1]
-            ]
-        roi_output = self.roi_head(*roi_input)
+        ]
+        # for ft in roi_input[0]:
+        #     print('[{}]: {}'.format(ft, fpn_features[ft].shape))
+        # exit()
+        # roi_output = self.roi_head(*roi_input)
+        roi_output = nn.Softmax(dim=2)(self.roi_head(*roi_input))
 
         out = {'pred_logits': outputs_class[-1], 'pred_boxes': outputs_coord[-1]}
         if self.aux_loss:
             out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord)
 
+        # print("detr: ", torch.max(out['pred_logits'][0], dim=1))
+        # print("roi: ", torch.max(roi_output, dim=2))
+        # out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] * roi_output)
         out['pred_logits'] = nn.Softmax(dim=2)(out['pred_logits'] + self.roi_weight * roi_output)
 
         return out

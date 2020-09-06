@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 #SBATCH --job-name=train_roi
-#SBATCH --output=res_%j.txt  # output file
-#SBATCH -e res_%j.err        # File to which STDERR will be written
+#SBATCH --output=logs/res_%j.txt  # output file
+#SBATCH -e logs/res_%j.err        # File to which STDERR will be written
 #SBATCH --partition=m40-long # Partition to submit to
 #
 #SBATCH --ntasks=1
@@ -11,12 +11,20 @@
 #SBATCH --partition=m40-long
 #SBATCH --mem 60G
 
-python -m torch.distributed.launch --nproc_per_node=4 --use_env main.py --roi_head \
+python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --roi_head --epoch 610 \
+    --lr 1e-5 \
     --backbone resnet101 \
     --batch_size 1 --dilation \
-    --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \
+    --resume /mnt/nfs/scratch1/zhiyilai/detr_roi/lr1en5/checkpoint.pth \
+    --start_epoch 600 \
     --coco_path /mnt/nfs/scratch1/zhiyilai/coco \
     --output_dir /mnt/nfs/scratch1/zhiyilai/detr_roi/
+
+    # --lr 1e-5 --use_subset \
+    # --start_epoch 300 \
+    # --output_dir /mnt/nfs/scratch1/zhiyilai/detr_roi/lr1en5
+
+    # --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \
 
 # python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --no_aux_loss --eval \
 #     --backbone resnet101 \

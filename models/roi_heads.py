@@ -113,9 +113,13 @@ class ROIHead(nn.Module):
         return predictions.view(b, q, self.num_classes+1)
 
 def build_roi_head(args):
-    num_channels = 2048
-    in_features       = ['p5']
-    input_shape = {'p5': ShapeSpec(channels=num_channels, stride=16)}
+    num_channels = 256
+    in_features       = ['p2', 'p3', 'p5']
+    input_shape = {
+        'p2': ShapeSpec(channels=num_channels, stride=4),
+        'p3': ShapeSpec(channels=num_channels, stride=8),
+        'p5': ShapeSpec(channels=num_channels, stride=16),
+        }
 
     pooler_resolution = args.pooler_resolution
     pooler_scales     = tuple(1.0 / input_shape[k].stride for k in in_features)

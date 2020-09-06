@@ -5,6 +5,26 @@ from torch import nn
 
 from detectron2.layers import Conv2d, ShapeSpec, get_norm
 
+def pad_to_even(feats):
+    result = []
+    scale = 2
+    for idx, x in enumerate(feats):
+        size = list(x.shape)
+        size[-2] = int(math.ceil(size[-2] / scale) * scale)
+        size[-1] = int(math.ceil(size[-1] / scale) * scale)
+        size = tuple(size)
+        # if idx is not 0:
+        #     scale *= 2
+        scale *= 2
+
+        padding = (0, size[-1] - x.shape[-1], 0, size[-2] - x.shape[-2])
+
+        padded_image = F.pad(x, padding)
+
+        result.append(padded_image)
+
+    return result
+
 class FPN(nn.Module):
     """
     This module implements :paper:`FPN`.
@@ -75,7 +95,8 @@ class FPN(nn.Module):
         self.top_block = top_block
         self.in_features = in_features
         # Return feature names are "p<stage>", like ["p2", "p3", ..., "p6"]
-        self._out_feature_strides = {"p{}".format(int(math.log2(s))): s for s in strides}
+        # self._out_feature_strides = {"p{}".format(int(math.log2(s))): s for s in strides}
+        self._out_feature_strides = {"p{}".format(i): s for i, s in zip([2, 3, 5], strides)}
         # top block output feature maps.
         if self.top_block is not None:
             for s in range(stage, stage + self.top_block.num_levels):
@@ -108,9 +129,17 @@ class FPN(nn.Module):
         # Reverse feature maps into top-down order (from low to high resolution)
         x = x[::-1]
         x = [a.tensors for a in x]
-        # print(len(x))
-        # for ft in x:
-        #     print(ft.shape)
+
+        # print('before: ')
+        # for a in x:
+        #     print(a.shape)
+
+        x = pad_to_even(x)
+
+        # print('after: ')
+        # for a in x:
+        #     print(a.shape)
+        # exit()
         
         results = []
         prev_features = self.lateral_convs[0](x[0])
@@ -118,14 +147,15 @@ class FPN(nn.Module):
         for features, lateral_conv, output_conv, idx in zip(
             x[1:], self.lateral_convs[1:], self.output_convs[1:], range(1, len(x))
         ):
-            if idx == 1 and self.backbone_dilation:
-                top_down_features = prev_features
-            else:
-                top_down_features = F.interpolate(prev_features, scale_factor=2, mode="nearest")
+            # if idx == 1 and self.backbone_dilation:
+            #     top_down_features = prev_features
+            # else:
+            #     top_down_features = F.interpolate(prev_features, scale_factor=2, mode="nearest")
+            top_down_features = F.interpolate(prev_features, scale_factor=2, mode="nearest")
             lateral_features = lateral_conv(features)
-            # print(lateral_features.shape)
-            # print(top_down_features.shape)
-            prev_features = lateral_features + top_down_features
+            # print("prev: ", prev_features.shape)
+            # print("td: ", top_down_features.shape)
+            # print("lat: ", lateral_features.shape)
             prev_features = lateral_features + top_down_features
             if self._fuse_type == "avg":
                 prev_features /= 2
@@ -199,7 +229,8 @@ def build_fpn(args):
     Returns:
         backbone (Backbone): backbone module, must be a subclass of :class:`Backbone`.
     """
-    in_features = ['res2', 'res3', 'res4', 'res5']
+    # in_features = ['res2', 'res3', 'res4', 'res5']
+    in_features = ['res2', 'res3', 'res5']
     out_channels = 256
 
     input_shapes = {
@@ -209,11 +240,14 @@ def build_fpn(args):
         'res3': ShapeSpec(
             channels=512, stride=8
         ),
-        'res4': ShapeSpec(
-            channels=1024, stride=16
-        ),
+        # 'res4': ShapeSpec(
+            # channels=1024, stride=16
+        # ),
+        # 'res5': ShapeSpec(
+            # channels=2048, stride=32
+        # ),
         'res5': ShapeSpec(
-            channels=2048, stride=32
+            channels=2048, stride=16
         ),
     }
 
@@ -223,7 +257,7 @@ def build_fpn(args):
         out_channels=out_channels,
         backbone_dilation = args.dilation,
         norm="",
-        top_block=LastLevelMaxPool(),
+        # top_block=LastLevelMaxPool(),
         fuse_type='sum',
     )
     return backbone
