@@ -309,7 +309,11 @@ def build(args):
 
     backbone = build_backbone(args)
 
-    transformer = build_transformer(args)
+    if args.ctransformer:
+        from .ctransformer import build_ctransformer
+        transformer = build_ctransformer(args)
+    else:
+        transformer = build_transformer(args)
 
     model = DETR(
         backbone,

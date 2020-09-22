@@ -39,6 +39,8 @@ def get_args_parser():
                         help="use subset to train and eval.")
     parser.add_argument('--fpn_backbone', action='store_true',
                         help="use fpn as backbone network.")
+    parser.add_argument('--ctransformer', action='store_true',
+                        help="use ctransformer as transformer network.")
 
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,

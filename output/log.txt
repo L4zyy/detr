@@ -21399,3 +21399,393 @@ VIS_PERIOD: 0
 [09/04 05:28:53] d2.evaluation.evaluator INFO: Inference done 4987/5000. 0.1255 s / img. ETA=0:00:01
 [09/04 05:28:55] d2.evaluation.evaluator INFO: Total inference time: 0:10:35.786273 (0.127285 s / img per device, on 1 devices)
 [09/04 05:28:55] d2.evaluation.evaluator INFO: Total inference pure compute time: 0:10:26 (0.125498 s / img per device, on 1 devices)
+[09/16 05:22:35] detectron2 INFO: Rank of current process: 0. World size: 1
+[09/16 05:22:39] detectron2 INFO: Environment info:
+------------------------  ------------------------------------------------------------------------------------------
+sys.platform              linux
+Python                    3.7.7 (default, May  7 2020, 21:25:33) [GCC 7.3.0]
+numpy                     1.19.0
+detectron2                0.1.3 @/home/zhiyilai/.local/lib/python3.7/site-packages/detectron2
+detectron2 compiler       GCC 7.3
+detectron2 CUDA compiler  10.1
+detectron2 arch flags     sm_35, sm_37, sm_50, sm_52, sm_60, sm_61, sm_70, sm_75
+DETECTRON2_ENV_MODULE     <not set>
+PyTorch                   1.5.1 @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torch
+PyTorch debug build       False
+CUDA available            True
+GPU 0                     Tesla M40 24GB
+CUDA_HOME                 /cm/shared/apps/cuda101/10.1.168
+NVCC                      Cuda compilation tools, release 10.1, V10.1.168
+Pillow                    7.1.2
+torchvision               0.6.0a0+35d732a @/home/zhiyilai/miniconda3/envs/vt/lib/python3.7/site-packages/torchvision
+torchvision arch flags    sm_35, sm_50, sm_60, sm_70, sm_75
+fvcore                    0.1.1.post20200623
+cv2                       3.4.2
+------------------------  ------------------------------------------------------------------------------------------
+PyTorch built with:
+  - GCC 7.3
+  - C++ Version: 201402
+  - Intel(R) Math Kernel Library Version 2020.0.1 Product Build 20200208 for Intel(R) 64 architecture applications
+  - Intel(R) MKL-DNN v0.21.1 (Git Hash 7d2fd500bc78936d1d648ca713b901012f470dbc)
+  - OpenMP 201511 (a.k.a. OpenMP 4.5)
+  - NNPACK is enabled
+  - CPU capability usage: AVX2
+  - CUDA Runtime 10.1
+  - NVCC architecture flags: -gencode;arch=compute_37,code=sm_37;-gencode;arch=compute_50,code=sm_50;-gencode;arch=compute_60,code=sm_60;-gencode;arch=compute_61,code=sm_61;-gencode;arch=compute_70,code=sm_70;-gencode;arch=compute_75,code=sm_75;-gencode;arch=compute_37,code=compute_37
+  - CuDNN 7.6.3
+  - Magma 2.5.2
+  - Build settings: BLAS=MKL, BUILD_TYPE=Release, CXX_FLAGS= -Wno-deprecated -fvisibility-inlines-hidden -fopenmp -DNDEBUG -DUSE_FBGEMM -DUSE_QNNPACK -DUSE_PYTORCH_QNNPACK -DUSE_XNNPACK -DUSE_INTERNAL_THREADPOOL_IMPL -O2 -fPIC -Wno-narrowing -Wall -Wextra -Werror=return-type -Wno-missing-field-initializers -Wno-type-limits -Wno-array-bounds -Wno-unknown-pragmas -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wno-unused-result -Wno-strict-overflow -Wno-strict-aliasing -Wno-error=deprecated-declarations -Wno-stringop-overflow -Wno-error=pedantic -Wno-error=redundant-decls -Wno-error=old-style-cast -fdiagnostics-color=always -faligned-new -Wno-unused-but-set-variable -Wno-maybe-uninitialized -fno-math-errno -fno-trapping-math -Werror=format -Wno-stringop-overflow, PERF_WITH_AVX=1, PERF_WITH_AVX2=1, PERF_WITH_AVX512=1, USE_CUDA=ON, USE_EXCEPTION_PTR=1, USE_GFLAGS=OFF, USE_GLOG=OFF, USE_MKL=ON, USE_MKLDNN=ON, USE_MPI=OFF, USE_NCCL=ON, USE_NNPACK=ON, USE_OPENMP=ON, USE_STATIC_DISPATCH=OFF, 
+
+[09/16 05:22:39] detectron2 INFO: Command line arguments: []
+[09/16 05:22:39] detectron2 INFO: Running with full config:
+CUDNN_BENCHMARK: False
+DATALOADER:
+  ASPECT_RATIO_GROUPING: True
+  FILTER_EMPTY_ANNOTATIONS: True
+  NUM_WORKERS: 4
+  REPEAT_THRESHOLD: 0.0
+  SAMPLER_TRAIN: TrainingSampler
+DATASETS:
+  PRECOMPUTED_PROPOSAL_TOPK_TEST: 1000
+  PRECOMPUTED_PROPOSAL_TOPK_TRAIN: 2000
+  PROPOSAL_FILES_TEST: ()
+  PROPOSAL_FILES_TRAIN: ()
+  TEST: ()
+  TRAIN: ()
+GLOBAL:
+  HACK: 1.0
+INPUT:
+  CROP:
+    ENABLED: False
+    SIZE: [0.9, 0.9]
+    TYPE: relative_range
+  FORMAT: BGR
+  MASK_FORMAT: polygon
+  MAX_SIZE_TEST: 1333
+  MAX_SIZE_TRAIN: 1333
+  MIN_SIZE_TEST: 800
+  MIN_SIZE_TRAIN: (800,)
+  MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  ANCHOR_GENERATOR:
+    ANGLES: [[-90, 0, 90]]
+    ASPECT_RATIOS: [[0.5, 1.0, 2.0]]
+    NAME: DefaultAnchorGenerator
+    OFFSET: 0.0
+    SIZES: [[32, 64, 128, 256, 512]]
+  BACKBONE:
+    FREEZE_AT: 2
+    NAME: build_resnet_backbone
+  DETR:
+    DEC_LAYERS: 6
+    DEEP_SUPERVISION: True
+    DIM_FEEDFORWARD: 2048
+    DROPOUT: 0.1
+    ENC_LAYERS: 6
+    GIOU_WEIGHT: 2.0
+    HIDDEN_DIM: 256
+    L1_WEIGHT: 5.0
+    NHEADS: 8
+    NO_OBJECT_WEIGHT: 0.1
+    NUM_CLASSES: 80
+    NUM_OBJECT_QUERIES: 100
+    PRE_NORM: False
+  DEVICE: cuda
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES: []
+    NORM: 
+    OUT_CHANNELS: 256
+  KEYPOINT_ON: False
+  LOAD_PROPOSALS: False
+  MASK_ON: False
+  META_ARCHITECTURE: GeneralizedRCNN
+  PANOPTIC_FPN:
+    COMBINE:
+      ENABLED: True
+      INSTANCES_CONFIDENCE_THRESH: 0.5
+      OVERLAP_THRESH: 0.5
+      STUFF_AREA_LIMIT: 4096
+    INSTANCE_LOSS_WEIGHT: 1.0
+  PIXEL_MEAN: [103.53, 116.28, 123.675]
+  PIXEL_STD: [1.0, 1.0, 1.0]
+  PROPOSAL_GENERATOR:
+    MIN_SIZE: 0
+    NAME: RPN
+  RESNETS:
+    DEFORM_MODULATED: False
+    DEFORM_NUM_GROUPS: 1
+    DEFORM_ON_PER_STAGE: [False, False, False, False]
+    DEPTH: 50
+    NORM: FrozenBN
+    NUM_GROUPS: 1
+    OUT_FEATURES: ['res4']
+    RES2_OUT_CHANNELS: 256
+    RES5_DILATION: 1
+    STEM_OUT_CHANNELS: 64
+    STRIDE_IN_1X1: True
+    WIDTH_PER_GROUP: 64
+  RETINANET:
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    FOCAL_LOSS_ALPHA: 0.25
+    FOCAL_LOSS_GAMMA: 2.0
+    IN_FEATURES: ['p3', 'p4', 'p5', 'p6', 'p7']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.4, 0.5]
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    NUM_CONVS: 4
+    PRIOR_PROB: 0.01
+    SCORE_THRESH_TEST: 0.05
+    SMOOTH_L1_LOSS_BETA: 0.1
+    TOPK_CANDIDATES_TEST: 1000
+  ROI_BOX_CASCADE_HEAD:
+    BBOX_REG_WEIGHTS: ((10.0, 10.0, 5.0, 5.0), (20.0, 20.0, 10.0, 10.0), (30.0, 30.0, 15.0, 15.0))
+    IOUS: (0.5, 0.6, 0.7)
+  ROI_BOX_HEAD:
+    BBOX_REG_WEIGHTS: (10.0, 10.0, 5.0, 5.0)
+    CLS_AGNOSTIC_BBOX_REG: False
+    CONV_DIM: 256
+    FC_DIM: 1024
+    NAME: 
+    NORM: 
+    NUM_CONV: 0
+    NUM_FC: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+    SMOOTH_L1_BETA: 0.0
+    TRAIN_ON_PRED_BOXES: False
+  ROI_HEADS:
+    BATCH_SIZE_PER_IMAGE: 512
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, 1]
+    IOU_THRESHOLDS: [0.5]
+    NAME: Res5ROIHeads
+    NMS_THRESH_TEST: 0.5
+    NUM_CLASSES: 80
+    POSITIVE_FRACTION: 0.25
+    PROPOSAL_APPEND_GT: True
+    SCORE_THRESH_TEST: 0.05
+  ROI_KEYPOINT_HEAD:
+    CONV_DIMS: (512, 512, 512, 512, 512, 512, 512, 512)
+    LOSS_WEIGHT: 1.0
+    MIN_KEYPOINTS_PER_IMAGE: 1
+    NAME: KRCNNConvDeconvUpsampleHead
+    NORMALIZE_LOSS_BY_VISIBLE_KEYPOINTS: True
+    NUM_KEYPOINTS: 17
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  ROI_MASK_HEAD:
+    CLS_AGNOSTIC_MASK: False
+    CONV_DIM: 256
+    NAME: MaskRCNNConvUpsampleHead
+    NORM: 
+    NUM_CONV: 0
+    POOLER_RESOLUTION: 14
+    POOLER_SAMPLING_RATIO: 0
+    POOLER_TYPE: ROIAlignV2
+  RPN:
+    BATCH_SIZE_PER_IMAGE: 256
+    BBOX_REG_WEIGHTS: (1.0, 1.0, 1.0, 1.0)
+    BOUNDARY_THRESH: -1
+    HEAD_NAME: StandardRPNHead
+    IN_FEATURES: ['res4']
+    IOU_LABELS: [0, -1, 1]
+    IOU_THRESHOLDS: [0.3, 0.7]
+    LOSS_WEIGHT: 1.0
+    NMS_THRESH: 0.7
+    POSITIVE_FRACTION: 0.5
+    POST_NMS_TOPK_TEST: 1000
+    POST_NMS_TOPK_TRAIN: 2000
+    PRE_NMS_TOPK_TEST: 6000
+    PRE_NMS_TOPK_TRAIN: 12000
+    SMOOTH_L1_BETA: 0.0
+  SEM_SEG_HEAD:
+    COMMON_STRIDE: 4
+    CONVS_DIM: 128
+    IGNORE_VALUE: 255
+    IN_FEATURES: ['p2', 'p3', 'p4', 'p5']
+    LOSS_WEIGHT: 1.0
+    NAME: SemSegFPNHead
+    NORM: GN
+    NUM_CLASSES: 54
+  WEIGHTS: 
+OUTPUT_DIR: ./output
+SEED: -1
+SOLVER:
+  BACKBONE_MULTIPLIER: 0.1
+  BASE_LR: 0.001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 5000
+  CLIP_GRADIENTS:
+    CLIP_TYPE: value
+    CLIP_VALUE: 1.0
+    ENABLED: False
+    NORM_TYPE: 2.0
+  GAMMA: 0.1
+  IMS_PER_BATCH: 16
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 40000
+  MOMENTUM: 0.9
+  NESTEROV: False
+  OPTIMIZER: ADAMW
+  STEPS: (30000,)
+  WARMUP_FACTOR: 0.001
+  WARMUP_ITERS: 1000
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+TEST:
+  AUG:
+    ENABLED: False
+    FLIP: True
+    MAX_SIZE: 4000
+    MIN_SIZES: (400, 500, 600, 700, 800, 900, 1000, 1100, 1200)
+  DETECTIONS_PER_IMAGE: 100
+  EVAL_PERIOD: 0
+  EXPECTED_RESULTS: []
+  KEYPOINT_OKS_SIGMAS: []
+  PRECISE_BN:
+    ENABLED: False
+    NUM_ITER: 200
+VERSION: 2
+VIS_PERIOD: 0
+[09/16 05:22:39] detectron2 INFO: Full config saved to ./output/config.yaml
+[09/16 05:22:39] d2.utils.env INFO: Using a generated random seed 39348870
+[09/16 05:22:40] fvcore.common.checkpoint INFO: Loading checkpoint from /home/zhiyilai/comp/detr_101.pth
+[09/16 05:22:42] fvcore.common.checkpoint INFO: Some model parameters or buffers are not found in the checkpoint:
+  [34mcriterion.empty_weight[0m
+[09/16 05:22:44] d2.data.datasets.coco INFO: Loaded 5000 images in COCO format from /mnt/nfs/scratch1/zhiyilai/coco/annotations/instances_val2017.json
+[09/16 05:22:44] d2.data.common INFO: Serializing 5000 elements to byte tensors and concatenating them all ...
+[09/16 05:22:44] d2.data.common INFO: Serialized dataset takes 19.48 MiB
+[09/16 05:22:45] d2.evaluation.evaluator INFO: Start inference on 5000 images
+[09/16 05:22:46] d2.evaluation.evaluator INFO: Inference done 11/5000. 0.1247 s / img. ETA=0:10:30
+[09/16 05:22:51] d2.evaluation.evaluator INFO: Inference done 51/5000. 0.1244 s / img. ETA=0:10:25
+[09/16 05:22:56] d2.evaluation.evaluator INFO: Inference done 91/5000. 0.1245 s / img. ETA=0:10:20
+[09/16 05:23:02] d2.evaluation.evaluator INFO: Inference done 132/5000. 0.1239 s / img. ETA=0:10:12
+[09/16 05:23:07] d2.evaluation.evaluator INFO: Inference done 172/5000. 0.1242 s / img. ETA=0:10:08
+[09/16 05:23:12] d2.evaluation.evaluator INFO: Inference done 212/5000. 0.1242 s / img. ETA=0:10:03
+[09/16 05:23:17] d2.evaluation.evaluator INFO: Inference done 252/5000. 0.1242 s / img. ETA=0:09:58
+[09/16 05:23:22] d2.evaluation.evaluator INFO: Inference done 292/5000. 0.1242 s / img. ETA=0:09:53
+[09/16 05:23:27] d2.evaluation.evaluator INFO: Inference done 332/5000. 0.1241 s / img. ETA=0:09:48
+[09/16 05:23:32] d2.evaluation.evaluator INFO: Inference done 371/5000. 0.1245 s / img. ETA=0:09:44
+[09/16 05:23:37] d2.evaluation.evaluator INFO: Inference done 412/5000. 0.1243 s / img. ETA=0:09:38
+[09/16 05:23:42] d2.evaluation.evaluator INFO: Inference done 452/5000. 0.1243 s / img. ETA=0:09:33
+[09/16 05:23:47] d2.evaluation.evaluator INFO: Inference done 491/5000. 0.1245 s / img. ETA=0:09:29
+[09/16 05:23:52] d2.evaluation.evaluator INFO: Inference done 532/5000. 0.1243 s / img. ETA=0:09:23
+[09/16 05:23:57] d2.evaluation.evaluator INFO: Inference done 572/5000. 0.1243 s / img. ETA=0:09:18
+[09/16 05:24:02] d2.evaluation.evaluator INFO: Inference done 612/5000. 0.1243 s / img. ETA=0:09:13
+[09/16 05:24:07] d2.evaluation.evaluator INFO: Inference done 652/5000. 0.1243 s / img. ETA=0:09:08
+[09/16 05:24:12] d2.evaluation.evaluator INFO: Inference done 692/5000. 0.1244 s / img. ETA=0:09:03
+[09/16 05:24:17] d2.evaluation.evaluator INFO: Inference done 732/5000. 0.1245 s / img. ETA=0:08:59
+[09/16 05:24:23] d2.evaluation.evaluator INFO: Inference done 772/5000. 0.1245 s / img. ETA=0:08:54
+[09/16 05:24:28] d2.evaluation.evaluator INFO: Inference done 812/5000. 0.1246 s / img. ETA=0:08:49
+[09/16 05:24:33] d2.evaluation.evaluator INFO: Inference done 852/5000. 0.1246 s / img. ETA=0:08:44
+[09/16 05:24:38] d2.evaluation.evaluator INFO: Inference done 892/5000. 0.1246 s / img. ETA=0:08:39
+[09/16 05:24:43] d2.evaluation.evaluator INFO: Inference done 933/5000. 0.1245 s / img. ETA=0:08:33
+[09/16 05:24:48] d2.evaluation.evaluator INFO: Inference done 973/5000. 0.1245 s / img. ETA=0:08:28
+[09/16 05:24:53] d2.evaluation.evaluator INFO: Inference done 1013/5000. 0.1245 s / img. ETA=0:08:23
+[09/16 05:24:58] d2.evaluation.evaluator INFO: Inference done 1053/5000. 0.1245 s / img. ETA=0:08:18
+[09/16 05:25:03] d2.evaluation.evaluator INFO: Inference done 1093/5000. 0.1246 s / img. ETA=0:08:13
+[09/16 05:25:08] d2.evaluation.evaluator INFO: Inference done 1132/5000. 0.1247 s / img. ETA=0:08:09
+[09/16 05:25:13] d2.evaluation.evaluator INFO: Inference done 1171/5000. 0.1247 s / img. ETA=0:08:04
+[09/16 05:25:18] d2.evaluation.evaluator INFO: Inference done 1210/5000. 0.1248 s / img. ETA=0:08:00
+[09/16 05:25:23] d2.evaluation.evaluator INFO: Inference done 1250/5000. 0.1248 s / img. ETA=0:07:54
+[09/16 05:25:28] d2.evaluation.evaluator INFO: Inference done 1290/5000. 0.1247 s / img. ETA=0:07:49
+[09/16 05:25:33] d2.evaluation.evaluator INFO: Inference done 1331/5000. 0.1246 s / img. ETA=0:07:44
+[09/16 05:25:38] d2.evaluation.evaluator INFO: Inference done 1371/5000. 0.1247 s / img. ETA=0:07:39
+[09/16 05:25:44] d2.evaluation.evaluator INFO: Inference done 1412/5000. 0.1246 s / img. ETA=0:07:33
+[09/16 05:25:49] d2.evaluation.evaluator INFO: Inference done 1452/5000. 0.1246 s / img. ETA=0:07:28
+[09/16 05:25:54] d2.evaluation.evaluator INFO: Inference done 1493/5000. 0.1245 s / img. ETA=0:07:23
+[09/16 05:25:59] d2.evaluation.evaluator INFO: Inference done 1534/5000. 0.1244 s / img. ETA=0:07:17
+[09/16 05:26:04] d2.evaluation.evaluator INFO: Inference done 1567/5000. 0.1250 s / img. ETA=0:07:15
+[09/16 05:26:09] d2.evaluation.evaluator INFO: Inference done 1607/5000. 0.1250 s / img. ETA=0:07:10
+[09/16 05:26:14] d2.evaluation.evaluator INFO: Inference done 1648/5000. 0.1250 s / img. ETA=0:07:05
+[09/16 05:26:19] d2.evaluation.evaluator INFO: Inference done 1688/5000. 0.1249 s / img. ETA=0:06:59
+[09/16 05:26:24] d2.evaluation.evaluator INFO: Inference done 1728/5000. 0.1249 s / img. ETA=0:06:54
+[09/16 05:26:29] d2.evaluation.evaluator INFO: Inference done 1768/5000. 0.1249 s / img. ETA=0:06:49
+[09/16 05:26:34] d2.evaluation.evaluator INFO: Inference done 1809/5000. 0.1249 s / img. ETA=0:06:44
+[09/16 05:26:39] d2.evaluation.evaluator INFO: Inference done 1850/5000. 0.1248 s / img. ETA=0:06:38
+[09/16 05:26:44] d2.evaluation.evaluator INFO: Inference done 1890/5000. 0.1248 s / img. ETA=0:06:33
+[09/16 05:26:49] d2.evaluation.evaluator INFO: Inference done 1930/5000. 0.1248 s / img. ETA=0:06:28
+[09/16 05:26:55] d2.evaluation.evaluator INFO: Inference done 1971/5000. 0.1248 s / img. ETA=0:06:23
+[09/16 05:27:00] d2.evaluation.evaluator INFO: Inference done 2011/5000. 0.1248 s / img. ETA=0:06:18
+[09/16 05:27:05] d2.evaluation.evaluator INFO: Inference done 2052/5000. 0.1247 s / img. ETA=0:06:13
+[09/16 05:27:10] d2.evaluation.evaluator INFO: Inference done 2092/5000. 0.1247 s / img. ETA=0:06:07
+[09/16 05:27:15] d2.evaluation.evaluator INFO: Inference done 2133/5000. 0.1247 s / img. ETA=0:06:02
+[09/16 05:27:20] d2.evaluation.evaluator INFO: Inference done 2174/5000. 0.1246 s / img. ETA=0:05:57
+[09/16 05:27:25] d2.evaluation.evaluator INFO: Inference done 2215/5000. 0.1246 s / img. ETA=0:05:52
+[09/16 05:27:30] d2.evaluation.evaluator INFO: Inference done 2254/5000. 0.1247 s / img. ETA=0:05:47
+[09/16 05:27:35] d2.evaluation.evaluator INFO: Inference done 2294/5000. 0.1246 s / img. ETA=0:05:42
+[09/16 05:27:40] d2.evaluation.evaluator INFO: Inference done 2334/5000. 0.1246 s / img. ETA=0:05:37
+[09/16 05:27:45] d2.evaluation.evaluator INFO: Inference done 2374/5000. 0.1247 s / img. ETA=0:05:32
+[09/16 05:27:50] d2.evaluation.evaluator INFO: Inference done 2414/5000. 0.1246 s / img. ETA=0:05:26
+[09/16 05:27:55] d2.evaluation.evaluator INFO: Inference done 2454/5000. 0.1247 s / img. ETA=0:05:21
+[09/16 05:28:00] d2.evaluation.evaluator INFO: Inference done 2495/5000. 0.1246 s / img. ETA=0:05:16
+[09/16 05:28:05] d2.evaluation.evaluator INFO: Inference done 2536/5000. 0.1246 s / img. ETA=0:05:11
+[09/16 05:28:11] d2.evaluation.evaluator INFO: Inference done 2576/5000. 0.1246 s / img. ETA=0:05:06
+[09/16 05:28:16] d2.evaluation.evaluator INFO: Inference done 2617/5000. 0.1246 s / img. ETA=0:05:01
+[09/16 05:28:21] d2.evaluation.evaluator INFO: Inference done 2657/5000. 0.1246 s / img. ETA=0:04:56
+[09/16 05:28:26] d2.evaluation.evaluator INFO: Inference done 2697/5000. 0.1246 s / img. ETA=0:04:51
+[09/16 05:28:31] d2.evaluation.evaluator INFO: Inference done 2737/5000. 0.1246 s / img. ETA=0:04:45
+[09/16 05:28:36] d2.evaluation.evaluator INFO: Inference done 2777/5000. 0.1246 s / img. ETA=0:04:40
+[09/16 05:28:41] d2.evaluation.evaluator INFO: Inference done 2818/5000. 0.1246 s / img. ETA=0:04:35
+[09/16 05:28:46] d2.evaluation.evaluator INFO: Inference done 2858/5000. 0.1246 s / img. ETA=0:04:30
+[09/16 05:28:51] d2.evaluation.evaluator INFO: Inference done 2898/5000. 0.1246 s / img. ETA=0:04:25
+[09/16 05:28:56] d2.evaluation.evaluator INFO: Inference done 2938/5000. 0.1246 s / img. ETA=0:04:20
+[09/16 05:29:01] d2.evaluation.evaluator INFO: Inference done 2978/5000. 0.1246 s / img. ETA=0:04:15
+[09/16 05:29:06] d2.evaluation.evaluator INFO: Inference done 3019/5000. 0.1246 s / img. ETA=0:04:10
+[09/16 05:29:11] d2.evaluation.evaluator INFO: Inference done 3058/5000. 0.1246 s / img. ETA=0:04:05
+[09/16 05:29:16] d2.evaluation.evaluator INFO: Inference done 3098/5000. 0.1246 s / img. ETA=0:04:00
+[09/16 05:29:22] d2.evaluation.evaluator INFO: Inference done 3138/5000. 0.1246 s / img. ETA=0:03:55
+[09/16 05:29:27] d2.evaluation.evaluator INFO: Inference done 3178/5000. 0.1246 s / img. ETA=0:03:50
+[09/16 05:29:32] d2.evaluation.evaluator INFO: Inference done 3218/5000. 0.1246 s / img. ETA=0:03:45
+[09/16 05:29:37] d2.evaluation.evaluator INFO: Inference done 3258/5000. 0.1246 s / img. ETA=0:03:40
+[09/16 05:29:42] d2.evaluation.evaluator INFO: Inference done 3298/5000. 0.1246 s / img. ETA=0:03:35
+[09/16 05:29:47] d2.evaluation.evaluator INFO: Inference done 3338/5000. 0.1246 s / img. ETA=0:03:29
+[09/16 05:29:52] d2.evaluation.evaluator INFO: Inference done 3378/5000. 0.1246 s / img. ETA=0:03:24
+[09/16 05:29:57] d2.evaluation.evaluator INFO: Inference done 3419/5000. 0.1246 s / img. ETA=0:03:19
+[09/16 05:30:02] d2.evaluation.evaluator INFO: Inference done 3459/5000. 0.1246 s / img. ETA=0:03:14
+[09/16 05:30:07] d2.evaluation.evaluator INFO: Inference done 3499/5000. 0.1246 s / img. ETA=0:03:09
+[09/16 05:30:12] d2.evaluation.evaluator INFO: Inference done 3539/5000. 0.1246 s / img. ETA=0:03:04
+[09/16 05:30:17] d2.evaluation.evaluator INFO: Inference done 3579/5000. 0.1246 s / img. ETA=0:02:59
+[09/16 05:30:22] d2.evaluation.evaluator INFO: Inference done 3619/5000. 0.1246 s / img. ETA=0:02:54
+[09/16 05:30:27] d2.evaluation.evaluator INFO: Inference done 3659/5000. 0.1246 s / img. ETA=0:02:49
+[09/16 05:30:32] d2.evaluation.evaluator INFO: Inference done 3699/5000. 0.1246 s / img. ETA=0:02:44
+[09/16 05:30:37] d2.evaluation.evaluator INFO: Inference done 3739/5000. 0.1246 s / img. ETA=0:02:39
+[09/16 05:30:42] d2.evaluation.evaluator INFO: Inference done 3779/5000. 0.1246 s / img. ETA=0:02:34
+[09/16 05:30:48] d2.evaluation.evaluator INFO: Inference done 3819/5000. 0.1246 s / img. ETA=0:02:29
+[09/16 05:30:53] d2.evaluation.evaluator INFO: Inference done 3858/5000. 0.1246 s / img. ETA=0:02:24
+[09/16 05:30:58] d2.evaluation.evaluator INFO: Inference done 3899/5000. 0.1246 s / img. ETA=0:02:19
+[09/16 05:31:03] d2.evaluation.evaluator INFO: Inference done 3940/5000. 0.1246 s / img. ETA=0:02:13
+[09/16 05:31:08] d2.evaluation.evaluator INFO: Inference done 3981/5000. 0.1246 s / img. ETA=0:02:08
+[09/16 05:31:13] d2.evaluation.evaluator INFO: Inference done 4022/5000. 0.1246 s / img. ETA=0:02:03
+[09/16 05:31:18] d2.evaluation.evaluator INFO: Inference done 4062/5000. 0.1246 s / img. ETA=0:01:58
+[09/16 05:31:23] d2.evaluation.evaluator INFO: Inference done 4102/5000. 0.1246 s / img. ETA=0:01:53
+[09/16 05:31:28] d2.evaluation.evaluator INFO: Inference done 4141/5000. 0.1246 s / img. ETA=0:01:48
+[09/16 05:31:33] d2.evaluation.evaluator INFO: Inference done 4182/5000. 0.1246 s / img. ETA=0:01:43
+[09/16 05:31:38] d2.evaluation.evaluator INFO: Inference done 4222/5000. 0.1246 s / img. ETA=0:01:38
+[09/16 05:31:43] d2.evaluation.evaluator INFO: Inference done 4263/5000. 0.1246 s / img. ETA=0:01:33
+[09/16 05:31:48] d2.evaluation.evaluator INFO: Inference done 4303/5000. 0.1246 s / img. ETA=0:01:28
+[09/16 05:31:53] d2.evaluation.evaluator INFO: Inference done 4343/5000. 0.1245 s / img. ETA=0:01:22
+[09/16 05:31:58] d2.evaluation.evaluator INFO: Inference done 4383/5000. 0.1245 s / img. ETA=0:01:17
+[09/16 05:32:03] d2.evaluation.evaluator INFO: Inference done 4423/5000. 0.1245 s / img. ETA=0:01:12
+[09/16 05:32:09] d2.evaluation.evaluator INFO: Inference done 4463/5000. 0.1245 s / img. ETA=0:01:07
+[09/16 05:32:14] d2.evaluation.evaluator INFO: Inference done 4496/5000. 0.1245 s / img. ETA=0:01:03
+[09/16 05:32:19] d2.evaluation.evaluator INFO: Inference done 4536/5000. 0.1245 s / img. ETA=0:00:58
+[09/16 05:32:24] d2.evaluation.evaluator INFO: Inference done 4577/5000. 0.1245 s / img. ETA=0:00:53
+[09/16 05:32:29] d2.evaluation.evaluator INFO: Inference done 4617/5000. 0.1245 s / img. ETA=0:00:48
+[09/16 05:32:34] d2.evaluation.evaluator INFO: Inference done 4657/5000. 0.1245 s / img. ETA=0:00:43
+[09/16 05:32:39] d2.evaluation.evaluator INFO: Inference done 4697/5000. 0.1245 s / img. ETA=0:00:38
+[09/16 05:32:44] d2.evaluation.evaluator INFO: Inference done 4737/5000. 0.1245 s / img. ETA=0:00:33
+[09/16 05:32:49] d2.evaluation.evaluator INFO: Inference done 4777/5000. 0.1245 s / img. ETA=0:00:28
+[09/16 05:32:54] d2.evaluation.evaluator INFO: Inference done 4817/5000. 0.1245 s / img. ETA=0:00:23
+[09/16 05:32:59] d2.evaluation.evaluator INFO: Inference done 4858/5000. 0.1245 s / img. ETA=0:00:17
+[09/16 05:33:04] d2.evaluation.evaluator INFO: Inference done 4897/5000. 0.1245 s / img. ETA=0:00:13
+[09/16 05:33:09] d2.evaluation.evaluator INFO: Inference done 4937/5000. 0.1245 s / img. ETA=0:00:07
+[09/16 05:33:14] d2.evaluation.evaluator INFO: Inference done 4977/5000. 0.1245 s / img. ETA=0:00:02
+[09/16 05:33:17] d2.evaluation.evaluator INFO: Total inference time: 0:10:31.725422 (0.126472 s / img per device, on 1 devices)
+[09/16 05:33:17] d2.evaluation.evaluator INFO: Total inference pure compute time: 0:10:22 (0.124533 s / img per device, on 1 devices)
