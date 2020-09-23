@@ -41,6 +41,8 @@ def get_args_parser():
                         help="use fpn as backbone network.")
     parser.add_argument('--ctransformer', action='store_true',
                         help="use ctransformer as transformer network.")
+    parser.add_argument('--merge', action='store_true',
+                        help="use merge layer in ctransformer.")
 
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,

@@ -7,15 +7,15 @@
 #
 #SBATCH --ntasks=1
 #SBATCH --time=07-00:00       # Runtime in D-HH:MM
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:4
 #SBATCH --partition=m40-long
 #SBATCH --mem 60G
 
-python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --ctransformer --merge --use_subset \
-	--epochs 150 \
-    --lr 1e-5 \
+python -m torch.distributed.launch --nproc_per_node=1 --use_env main.py --ctransformer --eval \
     --backbone resnet101 \
     --batch_size 1 --dilation \
     --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \
     --coco_path /mnt/nfs/scratch1/zhiyilai/coco \
-    --output_dir /mnt/nfs/scratch1/zhiyilai/detrs/cmdetr_sub
+    --output_dir /mnt/nfs/scratch1/zhiyilai/detrs/test/cdetr/
+
+#    --resume https://dl.fbaipublicfiles.com/detr/detr-r101-dc5-a2e86def.pth \

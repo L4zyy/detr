@@ -276,8 +276,22 @@ class TransformerDecoderLayer(nn.Module):
 def _get_clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for i in range(N)])
 
+class MergeLayer(nn.Module):
+    def __init__(self, d_model, dim_feedforward=2048, dropout=0.1, activation='relu'):
+        super().__init__()
+        self.linear1 = nn.Linear(2*d_model, dim_feedforward)
+        self.linear2 = nn.Linear(dim_feedforward, d_model)
+        self.dropout = nn.Dropout(dropout)
+        self.activation = _get_activation_fn(activation)
+    
+    def forward():
+        self.linear2(self.dropout(self.activation(self.linear1(tgt))))
 
 def build_ctransformer(args):
+    if args.merge:
+        merge_layers = MergeLayer(args.hidden_dim, args.dim_feedforward, args.dropout)
+    else:
+        merge_layers = False
     return CTransformer(
         d_model=args.hidden_dim,
         dropout=args.dropout,
@@ -287,6 +301,7 @@ def build_ctransformer(args):
         num_decoder_layers=args.dec_layers,
         normalize_before=args.pre_norm,
         return_intermediate_dec=True,
+        merge_layers = merge_layers
     )
 
 
