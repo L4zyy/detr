@@ -20,7 +20,7 @@ class CTransformer(nn.Module):
     def __init__(self, d_model=512, nhead=8, num_encoder_layers=6,
                  num_decoder_layers=6, dim_feedforward=2048, dropout=0.1,
                  activation="relu", normalize_before=False,
-                 return_intermediate_dec=False, merge_layers=False):
+                 return_intermediate_dec=False, merge_layer=False):
         super().__init__()
 
         encoder_layer = TransformerEncoderLayer(d_model, nhead, dim_feedforward,
@@ -39,6 +39,8 @@ class CTransformer(nn.Module):
         self.d_model = d_model
         self.nhead = nhead
 
+        self.merge_layer = merge_layer
+
     def _reset_parameters(self):
         for p in self.parameters():
             if p.dim() > 1:
@@ -54,6 +56,10 @@ class CTransformer(nn.Module):
 
         tgt = torch.zeros_like(query_embed)
         memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed)
+
+        for i, mem in enumerate(memory[:-1]):
+            memory[i] = self.merge_layer(torch.cat([memory[-1], mem], dim=2))
+
         hs = self.decoder(tgt, memory, memory_key_padding_mask=mask,
                           pos=pos_embed, query_pos=query_embed)
         return hs.transpose(1, 2), memory[-1].permute(1, 2, 0).view(bs, c, h, w)
@@ -284,14 +290,14 @@ class MergeLayer(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.activation = _get_activation_fn(activation)
     
-    def forward():
-        self.linear2(self.dropout(self.activation(self.linear1(tgt))))
+    def forward(self, src):
+        return self.linear2(self.dropout(self.activation(self.linear1(src))))
 
 def build_ctransformer(args):
     if args.merge:
-        merge_layers = MergeLayer(args.hidden_dim, args.dim_feedforward, args.dropout)
+        merge_layer = MergeLayer(args.hidden_dim, args.dim_feedforward, args.dropout)
     else:
-        merge_layers = False
+        merge_layer = False
     return CTransformer(
         d_model=args.hidden_dim,
         dropout=args.dropout,
@@ -301,7 +307,7 @@ def build_ctransformer(args):
         num_decoder_layers=args.dec_layers,
         normalize_before=args.pre_norm,
         return_intermediate_dec=True,
-        merge_layers = merge_layers
+        merge_layer = merge_layer
     )
 
 

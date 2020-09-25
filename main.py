@@ -211,7 +211,7 @@ def main(args):
             checkpoint = torch.load(args.resume, map_location='cpu')
 
         
-        if args.roi_head:
+        if args.roi_head or args.ctransformer:
             if args.start_epoch == 0:
                 model_without_ddp.load_detr_state_dict(checkpoint['model'])
             else:
