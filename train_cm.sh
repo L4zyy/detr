@@ -11,14 +11,16 @@
 #SBATCH --mem 60G
 
 python -m torch.distributed.launch --nproc_per_node=6 --use_env main.py --ctransformer --merge \
-	--epochs 20 \
+	--start_epoch 20 \
+	--epochs 80 \
 	--lr_drop 400 \
-    --lr 5e-6 \
+    # --lr 8e-6 \
+	--resume /mnt/nfs/scratch1/zhiyilai/detrs/cmdetr/checkpoint.pth \
     --backbone resnet50 \
     --batch_size 1 \
-    --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth \
     --coco_path /mnt/nfs/scratch1/zhiyilai/coco \
-    --output_dir /mnt/nfs/scratch1/zhiyilai/detrs/cmdetr_small
+    --output_dir /mnt/nfs/scratch1/zhiyilai/detrs/cmdetr
+    # --resume https://dl.fbaipublicfiles.com/detr/detr-r50-e632da11.pth \
 
 # python -m torch.distributed.launch --nproc_per_node=8 --use_env main.py --ctransformer --merge \
 # 	--epochs 20 \

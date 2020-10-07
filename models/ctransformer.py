@@ -57,8 +57,10 @@ class CTransformer(nn.Module):
         tgt = torch.zeros_like(query_embed)
         memory = self.encoder(src, src_key_padding_mask=mask, pos=pos_embed)
 
+        mem_prev = memory[-1]
         for i, mem in enumerate(memory[:-1]):
-            memory[i] = self.merge_layer(torch.cat([memory[-1], mem], dim=2))
+            mem_prev = self.merge_layer(torch.cat([mem_prev, mem], dim=2))
+            memory[i] = mem_prev
 
         hs = self.decoder(tgt, memory, memory_key_padding_mask=mask,
                           pos=pos_embed, query_pos=query_embed)
