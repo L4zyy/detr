@@ -1,0 +1,30 @@
+Timer unit: 1e-06 s
+
+Total time: 0.007771 s
+File: /home/zhiyilai/.cache/torch/hub/facebookresearch_detr_master/models/transformer.py
+Function: forward_pre at line 235
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+   235                                               def forward_pre(self, tgt, memory,
+   236                                                               tgt_mask: Optional[Tensor] = None,
+   237                                                               memory_mask: Optional[Tensor] = None,
+   238                                                               tgt_key_padding_mask: Optional[Tensor] = None,
+   239                                                               memory_key_padding_mask: Optional[Tensor] = None,
+   240                                                               pos: Optional[Tensor] = None,
+   241                                                               query_pos: Optional[Tensor] = None):
+   242         1        560.0    560.0      7.2          tgt2 = self.norm1(tgt)
+   243         1        107.0    107.0      1.4          q = k = self.with_pos_embed(tgt2, query_pos)
+   244         1         18.0     18.0      0.2          tgt2 = self.self_attn(q, k, value=tgt2, attn_mask=tgt_mask,
+   245         1       2820.0   2820.0     36.3                                key_padding_mask=tgt_key_padding_mask)[0]
+   246         1        220.0    220.0      2.8          tgt = tgt + self.dropout1(tgt2)
+   247         1        172.0    172.0      2.2          tgt2 = self.norm2(tgt)
+   248         1         75.0     75.0      1.0          tgt2 = self.multihead_attn(query=self.with_pos_embed(tgt2, query_pos),
+   249         1         52.0     52.0      0.7                                     key=self.with_pos_embed(memory, pos),
+   250         1          2.0      2.0      0.0                                     value=memory, attn_mask=memory_mask,
+   251         1       2473.0   2473.0     31.8                                     key_padding_mask=memory_key_padding_mask)[0]
+   252         1        203.0    203.0      2.6          tgt = tgt + self.dropout2(tgt2)
+   253         1        154.0    154.0      2.0          tgt2 = self.norm3(tgt)
+   254         1        722.0    722.0      9.3          tgt2 = self.linear2(self.dropout(self.activation(self.linear1(tgt2))))
+   255         1        190.0    190.0      2.4          tgt = tgt + self.dropout3(tgt2)
+   256         1          3.0      3.0      0.0          return tgt
