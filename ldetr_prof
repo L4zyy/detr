@@ -1,0 +1,37 @@
+Timer unit: 1e-06 s
+
+Total time: 0.102941 s
+File: /home/zhiyilai/.cache/torch/hub/facebookresearch_detr_master/models/detr.py
+Function: forward at line 44
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    44                                               def forward(self, samples: NestedTensor):
+    45                                                   """ The forward expects a NestedTensor, which consists of:
+    46                                                          - samples.tensor: batched images, of shape [batch_size x 3 x H x W]
+    47                                                          - samples.mask: a binary mask of shape [batch_size x H x W], containing 1 on padded pixels
+    48                                           
+    49                                                       It returns a dict with the following elements:
+    50                                                          - "pred_logits": the classification logits (including no-object) for all queries.
+    51                                                                           Shape= [batch_size x num_queries x (num_classes + 1)]
+    52                                                          - "pred_boxes": The normalized boxes coordinates for all queries, represented as
+    53                                                                          (center_x, center_y, height, width). These values are normalized in [0, 1],
+    54                                                                          relative to the size of each individual image (disregarding possible padding).
+    55                                                                          See PostProcess for information on how to retrieve the unnormalized bounding box.
+    56                                                          - "aux_outputs": Optional, only returned when auxilary losses are activated. It is a list of
+    57                                                                           dictionnaries containing the two above keys for each decoder layer.
+    58                                                   """
+    59         1          6.0      6.0      0.0          if isinstance(samples, (list, torch.Tensor)):
+    60         1        947.0    947.0      0.9              samples = nested_tensor_from_tensor_list(samples)
+    61         1      61562.0  61562.0     59.8          features, pos = self.backbone(samples)
+    62                                           
+    63         1          6.0      6.0      0.0          src, mask = features[-1].decompose()
+    64         1          1.0      1.0      0.0          assert mask is not None
+    65         1      39693.0  39693.0     38.6          hs = self.transformer(self.input_proj(src), mask, self.query_embed.weight, pos[-1])[0]
+    66                                           
+    67         1        128.0    128.0      0.1          outputs_class = self.class_embed(hs)
+    68         1        461.0    461.0      0.4          outputs_coord = self.bbox_embed(hs).sigmoid()
+    69         1         19.0     19.0      0.0          out = {'pred_logits': outputs_class[-1], 'pred_boxes': outputs_coord[-1]}
+    70         1          2.0      2.0      0.0          if self.aux_loss:
+    71         1        116.0    116.0      0.1              out['aux_outputs'] = self._set_aux_loss(outputs_class, outputs_coord)
+    72         1          0.0      0.0      0.0          return out

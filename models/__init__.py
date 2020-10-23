@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 from .detr import build
-from .detr_roi import build as roi_build
+# from .detr_roi import build as roi_build
 
 
 def build_model(args):

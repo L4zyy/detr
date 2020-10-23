@@ -322,6 +322,9 @@ def build(args):
     if args.ctransformer:
         from .ctransformer import build_ctransformer
         transformer = build_ctransformer(args)
+    elif args.ltransformer:
+        from .ltransformer import build_ltransformer
+        transformer = build_ltransformer(args)
     else:
         transformer = build_transformer(args)
 

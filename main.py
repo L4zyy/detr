@@ -44,6 +44,14 @@ def get_args_parser():
     parser.add_argument('--merge', action='store_true',
                         help="use merge layer in ctransformer.")
 
+    # LDETR
+    parser.add_argument('--ltransformer', action='store_true',
+                        help="use ltransformer as transformer network.")
+    parser.add_argument('--num_groups', default=2, type=int,
+                        help="Number of encoding groups in the transformer")
+    parser.add_argument('--num_inner_groups', default=1, type=int,
+                        help="Number of encoding inner groups in the transformer")
+
     # Model parameters
     parser.add_argument('--frozen_weights', type=str, default=None,
                         help="Path to the pretrained model. If set, only the mask head will be trained")
@@ -152,6 +160,13 @@ def main(args):
         model_without_ddp = model.module
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print('number of params:', n_parameters)
+
+    # print(model)
+    # bb_p = sum(p.numel() for p in model_without_ddp.backbone.parameters() if p.requires_grad)
+    # tf_p = sum(p.numel() for p in model_without_ddp.transformer.parameters() if p.requires_grad)
+    # print('number of backbone parameters:', bb_p)
+    # print('number of transformer parameters:', tf_p)
+    # exit()
 
     param_dicts = [
         {"params": [p for n, p in model_without_ddp.named_parameters() if "backbone" not in n and p.requires_grad]},
