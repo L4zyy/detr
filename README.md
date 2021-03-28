@@ -1,3 +1,6 @@
+Course Project: [PDF](https://l4zyy.github.io/files/Transformer.pdf)
+
+
 **DE⫶TR**: End-to-End Object Detection with Transformers
 ========
 PyTorch training code and pretrained models for **DETR** (**DE**tection **TR**ansformer).
